@@ -47,3 +47,6 @@ nbproject
 # project configs
 /config.json
 /db-config.json
+
+sfx/*.wav
+sfx/*.wave
