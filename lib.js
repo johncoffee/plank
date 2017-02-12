@@ -3,8 +3,8 @@
 
 document.addEventListener('keypress', (event) => {
   if (event.keyCode === 116) {
-    localStorage.removeItem('items')
-    localStorage[ 'items message ' ] = 'items cache was cleared with F5 on ' + new Date()
+    sessionStorage.removeItem('items')
+    sessionStorage[ 'items message ' ] = 'items cache was cleared with F5 on ' + new Date()
   }
 })
 
@@ -12,8 +12,8 @@ function loadContent () {
   return new Promise((resolve, reject) => {
     let items = null
     try {
-      if (localStorage.items) {
-        items = JSON.parse(localStorage.items)
+      if (sessionStorage.items) {
+        items = JSON.parse(sessionStorage.items)
       }
     }
     catch (e) {
@@ -52,7 +52,7 @@ function loadContent () {
           items = items2
           items.forEach(item => console.debug(item.name))
           items.forEach((item) => {if (!item.tags) item.tags = {} }) // fix tags
-          setTimeout(() => {localStorage.items = JSON.stringify(items)}, 100)
+          setTimeout(() => {sessionStorage.items = JSON.stringify(items)}, 100)
           resolve(items)
         })
         .catch(reject)
