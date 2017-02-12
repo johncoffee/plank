@@ -4,20 +4,21 @@ const walkSync = require('walk-sync');
 
 const dir = join(__dirname, '../sfx')
 
-const paths:string[] = walkSync(dir, {
-  globs: ['*.ogg'],
-  directories: false });
+const paths: string[] = walkSync(dir, {
+  globs: [ '*.ogg' ],
+  directories: false
+});
 
-let names:string[] = paths.map((path:string) => path.replace('.ogg', ''))
+let names: string[] = paths.map((path: string) => path.replace('.ogg', ''))
 
 let audioCode = paths
-  .map(path => `<audio src="sfx/${path}" id="${path.replace('.ogg','')}" preload="auto"></audio>`)
+  .map(path => `<audio src="sfx/${path}" id="${path.replace('.ogg', '')}" preload="auto"></audio>`)
   .join('\n')
 
 audioCode = `console.log('inserting audio tags..');\n document.getElementById('sfx-container').innerHTML = \`${audioCode}\` \n\n`
 
 let functionsCode = names
-  .map(name => `function play_${name}():void {
+    .map(name => `function play_${name}():void {
    let e = document.getElementById("${name}") as HTMLAudioElement
    if (e) {
       e.play()
@@ -26,7 +27,10 @@ let functionsCode = names
       console.error('did not find audio element "${name}"')
    }
  } `)
-  .join('\n')
+    .join('\n')
+  + '// For copy-pasting:\n'
+  + names.map(name => `  // play_${name},`)
+    .join('\n')
 
 // console.log(audioCode)
 // writeFileSync(join(__dirname, '../SfxEnum.ts'), enumCode, console.log)

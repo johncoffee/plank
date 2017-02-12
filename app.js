@@ -91,12 +91,14 @@ angular.module('app').component('plank', {
     function onLastEnd (item) {
       console.debug('Done. (onLastEnd)', item)
       play_fanfare()
+      setTimeout(play_done_for_today, 1000)
       self.index = 0
       running = false
     }
 
     function onFirstStart (item) {
       running = true
+      setTimeout( play_dette_er_den_nye_planke, 1900 )
       console.debug('first start', item)
     }
 

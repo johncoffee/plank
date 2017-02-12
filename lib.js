@@ -95,8 +95,21 @@ const randomStuff = [
   play_ned_med_numsen,
   play_ned_med_numserne,
 
+  play_fedt,
+play_good_job,
+play_good_job2,
+]
+
+const brok = [
+  play_hold_boette,
 ]
 const keepAssDown = [
+
+  play_husk_numserne_de_skal_ned,
+  play_husk_numserne_skal_ned,
+  play_ned_med_numsen,
+  play_ned_med_numserne,
+
 ]
 
 function playRandomFromArray (array) {

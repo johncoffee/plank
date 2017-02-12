@@ -1,6 +1,7 @@
 console.log('inserting audio tags..');
  document.getElementById('sfx-container').innerHTML = `<audio src="sfx/7_endnu.ogg" id="7_endnu" preload="auto"></audio>
 <audio src="sfx/alright_lets_call_it_a_day.ogg" id="alright_lets_call_it_a_day" preload="auto"></audio>
+<audio src="sfx/but_lower_your_butt.ogg" id="but_lower_your_butt" preload="auto"></audio>
 <audio src="sfx/coin.ogg" id="coin" preload="auto"></audio>
 <audio src="sfx/complaining_is_always_good.ogg" id="complaining_is_always_good" preload="auto"></audio>
 <audio src="sfx/der_er_en_del_nye_oevelser.ogg" id="der_er_en_del_nye_oevelser" preload="auto"></audio>
@@ -34,6 +35,7 @@ console.log('inserting audio tags..');
 <audio src="sfx/nice_slow.ogg" id="nice_slow" preload="auto"></audio>
 <audio src="sfx/nu_gider_jeg_ikke_lave_den_mere.ogg" id="nu_gider_jeg_ikke_lave_den_mere" preload="auto"></audio>
 <audio src="sfx/ready.ogg" id="ready" preload="auto"></audio>
+<audio src="sfx/saa_skal_vi_over_og_laegge_paa_siden.ogg" id="saa_skal_vi_over_og_laegge_paa_siden" preload="auto"></audio>
 <audio src="sfx/skub_biseps_fremad.ogg" id="skub_biseps_fremad" preload="auto"></audio>
 <audio src="sfx/skulder_klap.ogg" id="skulder_klap" preload="auto"></audio>
 <audio src="sfx/stille_og_rolige_bevaegelser.ogg" id="stille_og_rolige_bevaegelser" preload="auto"></audio>

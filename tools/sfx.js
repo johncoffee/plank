@@ -22,7 +22,10 @@ let functionsCode = names
       console.error('did not find audio element "${name}"')
    }
  } `)
-    .join('\n');
+    .join('\n')
+    + '// For copy-pasting:\n'
+    + names.map(name => `  // play_${name},`)
+        .join('\n');
 // console.log(audioCode)
 // writeFileSync(join(__dirname, '../SfxEnum.ts'), enumCode, console.log)
 fs_1.writeFileSync(path_1.join(__dirname, '../audiotags.js'), audioCode, console.log);
