@@ -90,13 +90,11 @@ const randomStuff = [
   play_husk_hoften_den_sku_vaere_plan,
   play_husk_og_hold_hoften_lee,
   play_fart1,
-
+  play_lee_kom_nu,
   play_hold_boette,
   play_du_kommer_lige_til_din_yndlings,
 ]
 
-const brok = [
-]
 const keepAssDown = [
   play_husk_numserne_de_skal_ned,
   play_husk_numserne_skal_ned,
@@ -104,15 +102,21 @@ const keepAssDown = [
   play_ned_med_numserne,
 ]
 
-function playRandomFromArray (array) {
+function playRandomFromArray (array, delay) {
   if (!array || array.length === 0) {
     console.info("did not play random", array)
   }
   else {
     const idx = Math.floor(Math.random() * array.length)
-    array[idx]()
+    const sound = array[idx]
+    if (delay) {
+      setTimeout(sound, delay * 1000)
+      if (delay > 100) console.warn("Delay is way too long?",delay,array)
+    }
+    else {
+      sound()
+    }
     array.splice(idx, 1)
-    console.log(array.length)
   }
 }
 

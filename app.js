@@ -118,19 +118,14 @@ angular.module('app').component('plank', {
       setTimeout(() => e.classList.add(animationClass), grace)
       console.debug(item.tags)
       if (!item.tags.pause) {
-        setTimeout(() => {
-          console.debug("random")
-          playRandomFromArray(randomStuff)
-        }, item.duration * 1 / 2 + item.duration * 1 / 3 * Math.random() * 1000)
+        console.debug("random")
+        playRandomFromArray(randomStuff, item.duration * 1 / 2 + item.duration * 1 / 3 * Math.random())
 
         if(item.tags.tuktuk) {
           playRandomFromArray(tukTuk)
         }
         if(item.tags.diagonal) {
           playRandomFromArray(keepAssDown)
-        }
-        if(item.tags.tough) {
-          setTimeout(() => playRandomFromArray(brok),1000)
         }
       }
     }
