@@ -86,6 +86,7 @@ angular.module('app').component('plank', {
 
     function onLastStart (item) {
       console.debug('onLastStart', item)
+      setTimeout( play_whoow, 2000 )
     }
 
     function onLastEnd (item) {
@@ -124,6 +125,12 @@ angular.module('app').component('plank', {
       }
       if(item.tags.tuktuk) {
         playRandomFromArray(tukTuk)
+      }
+      if(item.tags.diagonal) {
+        playRandomFromArray(keepAssDown)
+      }
+      if(item.tags.tough) {
+        setTimeout(() => playRandomFromArray(brok),1000)
       }
     }
 

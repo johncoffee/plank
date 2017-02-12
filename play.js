@@ -133,6 +133,15 @@ function play_fanfare() {
         console.error('did not find audio element "fanfare"');
     }
 }
+function play_fart1() {
+    let e = document.getElementById("fart1");
+    if (e) {
+        e.play();
+    }
+    else {
+        console.error('did not find audio element "fart1"');
+    }
+}
 function play_fedt() {
     let e = document.getElementById("fedt");
     if (e) {
@@ -481,6 +490,7 @@ function play_whoow() {
 // play_du_kommer_lige_til_din_yndlings,
 // play_duuut,
 // play_fanfare,
+// play_fart1,
 // play_fedt,
 // play_good_job,
 // play_good_job2,

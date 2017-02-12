@@ -14,6 +14,7 @@ console.log('inserting audio tags..');
 <audio src="sfx/du_kommer_lige_til_din_yndlings.ogg" id="du_kommer_lige_til_din_yndlings" preload="auto"></audio>
 <audio src="sfx/duuut.ogg" id="duuut" preload="auto"></audio>
 <audio src="sfx/fanfare.ogg" id="fanfare" preload="auto"></audio>
+<audio src="sfx/fart1.ogg" id="fart1" preload="auto"></audio>
 <audio src="sfx/fedt.ogg" id="fedt" preload="auto"></audio>
 <audio src="sfx/good_job.ogg" id="good_job" preload="auto"></audio>
 <audio src="sfx/good_job2.ogg" id="good_job2" preload="auto"></audio>

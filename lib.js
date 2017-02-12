@@ -4,7 +4,7 @@
 document.addEventListener('keypress', (event) => {
   if (event.keyCode === 116) {
     localStorage.removeItem('items')
-    localStorage[ 'items cache was cleared with F5 on ' + new Date() ] = ''
+    localStorage[ 'items message ' ] = 'items cache was cleared with F5 on ' + new Date()
   }
 })
 
@@ -89,27 +89,18 @@ const randomStuff = [
   play_complaining_is_always_good,
   play_husk_hoften_den_sku_vaere_plan,
   play_husk_og_hold_hoften_lee,
-
-  play_husk_numserne_de_skal_ned,
-  play_husk_numserne_skal_ned,
-  play_ned_med_numsen,
-  play_ned_med_numserne,
-
-  play_fedt,
-play_good_job,
-play_good_job2,
+  play_fart1,
 ]
 
 const brok = [
   play_hold_boette,
+  play_du_kommer_lige_til_din_yndlings,
 ]
 const keepAssDown = [
-
   play_husk_numserne_de_skal_ned,
   play_husk_numserne_skal_ned,
   play_ned_med_numsen,
   play_ned_med_numserne,
-
 ]
 
 function playRandomFromArray (array) {
