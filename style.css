@@ -3,10 +3,6 @@ html, body {
     background: #ddefed;
     color: #121822;
 }
-app {
-    display: block;
-    height:100%;
-}
 
 #duration-visual {
     position: fixed;
