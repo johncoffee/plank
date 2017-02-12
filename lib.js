@@ -1,3 +1,6 @@
+'use strict'
+
+
 document.addEventListener('keypress', (event) => {
   if (event.keyCode === 116) {
     localStorage.removeItem('items')
@@ -35,6 +38,9 @@ function loadContent () {
           let pause = {
             duration: 1,
             name: "Pause",
+            tags: {
+              pause: 1,
+            },
           }
           let items2 = []
           items.forEach((item, index) => {
@@ -72,6 +78,36 @@ function toggleFullScreen () {
     } else if (document.webkitCancelFullScreen) {
       document.webkitCancelFullScreen();
     }
+  }
+}
+
+const tukTuk = [play_tuk_tuk3, play_tuktuk, play_tuktuk2, play_tuktuk4, play_tuk_tuk_en_gang]
+const randomStuff = [
+  play_nice_slow,
+  play_det_jo_ren_afslapning,
+  play_vi_kan_godt_grine_igennem_det_naeste,
+  play_complaining_is_always_good,
+  play_husk_hoften_den_sku_vaere_plan,
+  play_husk_og_hold_hoften_lee,
+
+  play_husk_numserne_de_skal_ned,
+  play_husk_numserne_skal_ned,
+  play_ned_med_numsen,
+  play_ned_med_numserne,
+
+]
+const keepAssDown = [
+]
+
+function playRandomFromArray (array) {
+  if (!array || array.length === 0) {
+    console.info("did not play random", array)
+  }
+  else {
+    const idx = Math.floor(Math.random() * array.length)
+    array[idx]()
+    array.splice(idx, 1)
+    console.log(array.length)
   }
 }
 

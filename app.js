@@ -19,7 +19,7 @@ angular.module('app').component('plankApp', {
     <plank ng-if="$ctrl.loading === false"></plank>
 <h2 ng-if="$ctrl.loading">Loading more..</h2>`,
   controller: function ($timeout, $window, $scope) {
-    this.loading = true
+    this.loading = (location.host.indexOf('localhost') === -1)
     $timeout(() => {
       this.loading = false
     }, 2000)
@@ -55,7 +55,7 @@ angular.module('app').component('plank', {
     const queue = $window.queue
     this.queue = $window.queue
 
-    const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 10 : 0
+    const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 0
     let handle
     let running = false
     this.index = 0
@@ -113,22 +113,16 @@ angular.module('app').component('plank', {
       console.assert(item.duration, "should be duration")
       e.setAttribute('class', '')
       setTimeout(() => e.classList.add(animationClass), grace)
+      console.debug(item.tags)
       if (!item.tags.pause) {
         setTimeout(() => {
           console.debug("random")
+          playRandomFromArray(randomStuff)
         }, item.duration * 1 / 3 + item.duration * 1 / 2 * Math.random() * 1000)
       }
-    }
-
-    function random () {
-      const sounds = [
-        play_nice_slow,
-        play_alright_lets_call_it_a_day,
-        play_det_jo_ren_afslapning,
-        play_vi_kan_godt_grine_igennem_det_naeste,
-        play_complaining_is_always_good
-      ]
-      sounds[ Math.floor(Math.random() * sounds.length) ]()
+      if(item.tags.tuktuk) {
+        playRandomFromArray(tukTuk)
+      }
     }
 
     function onEnd (item) {
