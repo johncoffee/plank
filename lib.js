@@ -90,11 +90,12 @@ const randomStuff = [
   play_husk_hoften_den_sku_vaere_plan,
   play_husk_og_hold_hoften_lee,
   play_fart1,
+
+  play_hold_boette,
+  play_du_kommer_lige_til_din_yndlings,
 ]
 
 const brok = [
-  play_hold_boette,
-  play_du_kommer_lige_til_din_yndlings,
 ]
 const keepAssDown = [
   play_husk_numserne_de_skal_ned,

@@ -121,16 +121,17 @@ angular.module('app').component('plank', {
         setTimeout(() => {
           console.debug("random")
           playRandomFromArray(randomStuff)
-        }, item.duration * 1 / 3 + item.duration * 1 / 2 * Math.random() * 1000)
-      }
-      if(item.tags.tuktuk) {
-        playRandomFromArray(tukTuk)
-      }
-      if(item.tags.diagonal) {
-        playRandomFromArray(keepAssDown)
-      }
-      if(item.tags.tough) {
-        setTimeout(() => playRandomFromArray(brok),1000)
+        }, item.duration * 1 / 2 + item.duration * 1 / 3 * Math.random() * 1000)
+
+        if(item.tags.tuktuk) {
+          playRandomFromArray(tukTuk)
+        }
+        if(item.tags.diagonal) {
+          playRandomFromArray(keepAssDown)
+        }
+        if(item.tags.tough) {
+          setTimeout(() => playRandomFromArray(brok),1000)
+        }
       }
     }
 
