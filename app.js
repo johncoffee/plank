@@ -65,7 +65,7 @@ angular.module('app').component('plank', {
     const numColours = colours.length
 
 
-    const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 0
+    const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 10
     let handle
     let running = false
     this.index = 0
