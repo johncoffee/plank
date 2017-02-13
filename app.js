@@ -28,32 +28,42 @@ angular.module('app').component('plankApp', {
 
 angular.module('app').component('plank', {
   template: `
-<div id="duration-visual"></div>
+<div class="screen" style="z-index: 0;" md-colors="{'background': $ctrl.bgColour}"></div>
 
-<div layout="row" layout-align="center center" style="height: 100%; position:relative; z-index: 1">
-  <h1 class="md-display-3"
-   ng-bind="$ctrl.text"></h1>
-  
-  <div class="hover-button">
-    <div layout="row">   
-      <div layout="row" layout-align="end end">
-          <md-button class="md-button md-raised" 
-            ng-click="$ctrl.fullscreen()">immersive mode</md-button>
-                                   
-          <md-button class="md-button md-raised"
-           ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
-          ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
-           ng-bind="$ctrl.running() ? 'stop' : 'start'"></md-button>
+<div id="duration-visual" style="z-index: 2;" class="" md-colors="{'background': $ctrl.progressColour}"></div>
+
+<div class="screen" style="z-index: 5">
+  <div layout="row"
+       layout-align="center center"  
+       style="height: 100%;">      
+    
+    <h1 class="md-display-3" ng-bind="$ctrl.text"></h1>
+    
+    <div class="hover-button">
+      <div layout="row">   
+        <div layout="row" layout-align="end end">
+            <md-button class="md-button md-raised" 
+              ng-click="$ctrl.fullscreen()">immersive mode</md-button>
+                                     
+            <md-button class="md-button md-raised"
+             ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
+            ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
+             ng-bind="$ctrl.running() ? 'stop' : 'start'"></md-button>
+        </div>
       </div>
     </div>
   </div>
 </div>
   `,
   bindings: {},
-  controller: function ($timeout, $window, $scope) {
+  controller: function ($timeout, $window, $scope, $mdColorPalette) {
     const self = this
     const queue = $window.queue
     this.queue = $window.queue
+
+    const colours = Object.keys($mdColorPalette)
+    const numColours = colours.length
+
 
     const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 0
     let handle
@@ -71,6 +81,16 @@ angular.module('app').component('plank', {
       $scope.$apply()
     })
       .catch(error => console.error(error))
+
+    this.rotateColours = () => {
+      this.bgColour = colours[Math.floor(numColours * Math.random())]
+      this.progressColour = colours[Math.floor(numColours * Math.random())]
+      if (this.bgColour === this.progressColour) {
+        this.rotateColours()
+      }
+    }
+
+    this.rotateColours()
 
     this.fullscreen = function () {
       toggleFullScreen()
@@ -92,14 +112,14 @@ angular.module('app').component('plank', {
     function onLastEnd (item) {
       console.debug('Done. (onLastEnd)', item)
       play_fanfare()
-      setTimeout(play_done_for_today, 1000)
+      setTimeout(play_done_for_today, 1200)
+      self.text = ""
       self.index = 0
       running = false
     }
 
     function onFirstStart (item) {
       running = true
-      setTimeout( play_dette_er_den_nye_planke, 1900 )
       console.debug('first start', item)
     }
 
@@ -131,8 +151,8 @@ angular.module('app').component('plank', {
     }
 
     function onEnd (item) {
+      self.rotateColours()
       console.debug('ends', item)
-      self.text = ""
     }
 
     this.stop = function () {
