@@ -1,5 +1,6 @@
 'use strict'
 
+let handles = new Set()
 
 document.addEventListener('keypress', (event) => {
   if (event.keyCode === 116) {
@@ -37,9 +38,9 @@ function loadContent () {
           items.forEach(item => console.debug(item.order + ' ' + item.name))
           let pause = {
             duration: 1,
-            name: "Pause",
+            name: "Skift",
             tags: {
-              pause: 1,
+              change: 1,
             },
           }
           let items2 = []
@@ -53,6 +54,7 @@ function loadContent () {
           items.forEach(item => console.debug(item.name))
           items.forEach((item) => {if (!item.tags) item.tags = {} }) // fix tags
           setTimeout(() => {sessionStorage.items = JSON.stringify(items)}, 100)
+          if (sessionStorage.skip) items.forEach(item => item.duration = parseFloat(sessionStorage.skip))
           resolve(items)
         })
         .catch(reject)
@@ -110,7 +112,8 @@ function playRandomFromArray (array, delay) {
     const idx = Math.floor(Math.random() * array.length)
     const sound = array[idx]
     if (delay) {
-      setTimeout(sound, delay * 1000)
+      const h = setTimeout(sound, delay * 1000)
+      handles.add(h)
       if (delay > 100) console.warn("Delay is way too long?",delay,array)
     }
     else {

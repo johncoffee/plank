@@ -70,9 +70,6 @@ angular.module('app').component('plank', {
     this.index = 0
     this.text = ""
 
-    let rounds = 3
-    let handles = new Set()
-
     loadContent().then(result => {
       queue.length = 0
       result.forEach(item => queue.push(item))
@@ -114,7 +111,6 @@ angular.module('app').component('plank', {
       self.text = ""
       self.index = 0
       running = false
-      // rounds--
       $scope.$apply()
     }
 
@@ -136,8 +132,7 @@ angular.module('app').component('plank', {
       document.getElementById('duration-visual').setAttribute('class', '')
       setTimeout(() => document.getElementById('duration-visual').setAttribute('class', animationClass), grace)
 
-      if (!item.tags.pause) {
-        console.debug("random")
+      if (!item.tags.change) {
         playRandomFromArray(randomStuff, item.duration * 1 / 2 + item.duration * 1 / 3 * Math.random())
 
         if (item.tags.tuktuk) {
@@ -174,7 +169,6 @@ angular.module('app').component('plank', {
     }
 
     this.stop = function () {
-      rounds = 3
       handles.forEach(handle => clearTimeout(handle))
       handles = new Set()
 
