@@ -7,6 +7,33 @@ function play_7_endnu() {
         console.error('did not find audio element "7_endnu"');
     }
 }
+function play_Blip1() {
+    let e = document.getElementById("Blip1");
+    if (e) {
+        e.play();
+    }
+    else {
+        console.error('did not find audio element "Blip1"');
+    }
+}
+function play_Blip2() {
+    let e = document.getElementById("Blip2");
+    if (e) {
+        e.play();
+    }
+    else {
+        console.error('did not find audio element "Blip2"');
+    }
+}
+function play_Blip3() {
+    let e = document.getElementById("Blip3");
+    if (e) {
+        e.play();
+    }
+    else {
+        console.error('did not find audio element "Blip3"');
+    }
+}
 function play_alright_lets_call_it_a_day() {
     let e = document.getElementById("alright_lets_call_it_a_day");
     if (e) {
@@ -14,6 +41,15 @@ function play_alright_lets_call_it_a_day() {
     }
     else {
         console.error('did not find audio element "alright_lets_call_it_a_day"');
+    }
+}
+function play_biipbiip() {
+    let e = document.getElementById("biipbiip");
+    if (e) {
+        e.play();
+    }
+    else {
+        console.error('did not find audio element "biipbiip"');
     }
 }
 function play_but_lower_your_butt() {
@@ -476,7 +512,11 @@ function play_whoow() {
     }
 } // For copy-pasting:
 // play_7_endnu,
+// play_Blip1,
+// play_Blip2,
+// play_Blip3,
 // play_alright_lets_call_it_a_day,
+// play_biipbiip,
 // play_but_lower_your_butt,
 // play_coin,
 // play_complaining_is_always_good,
