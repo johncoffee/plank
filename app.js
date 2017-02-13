@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module("app", [ 'ngMaterial' ])
+angular.module("app", ['ngMaterial'])
 
 angular.module("app").config(function ($mdThemingProvider) {
   $mdThemingProvider.theme('default')
@@ -64,7 +64,6 @@ angular.module('app').component('plank', {
     const colours = Object.keys($mdColorPalette)
     const numColours = colours.length
 
-
     const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 10
     let handle
     let running = false
@@ -106,7 +105,7 @@ angular.module('app').component('plank', {
 
     function onLastStart (item) {
       console.debug('onLastStart', item)
-      setTimeout( play_whoow, 2000 )
+      setTimeout(play_whoow, 2000)
     }
 
     function onLastEnd (item) {
@@ -141,10 +140,10 @@ angular.module('app').component('plank', {
         console.debug("random")
         playRandomFromArray(randomStuff, item.duration * 1 / 2 + item.duration * 1 / 3 * Math.random())
 
-        if(item.tags.tuktuk) {
+        if (item.tags.tuktuk) {
           playRandomFromArray(tukTuk)
         }
-        if(item.tags.diagonal) {
+        if (item.tags.diagonal) {
           playRandomFromArray(keepAssDown)
         }
       }
@@ -176,13 +175,13 @@ angular.module('app').component('plank', {
 
     this.startItem = function () {
       const index = this.index++
-      const item = queue[ index ]
+      const item = queue[index]
 
       if (index === queue.length) {
         onLastStart(item, index)
       }
       if (index === 0) {
-        onFirstStart(queue[ index ], index)
+        onFirstStart(queue[index], index)
       }
       if (item.onStart) item.onStart(item, index)
       onStart(item, index)
