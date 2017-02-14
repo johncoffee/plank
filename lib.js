@@ -123,8 +123,8 @@ function playRandomFromArray (array, delay) {
   }
 }
 
-setTimeout(function () {
-  let classes = []
+(function () {
+  const classes = []
 
   for (let i = 1; i < 60; i++) {
     classes.push(`
@@ -135,8 +135,8 @@ setTimeout(function () {
   .duration-visual--${i} { animation-duration: ${i}s }`)
   }
 
-  let e = document.createElement('style')
+  const e = document.createElement('style')
   e.innerHTML = classes.join('\n')
   document.head.appendChild(e)
   console.debug('inserted animation classes')
-}, 50)
+})()
