@@ -82,7 +82,10 @@ function toggleFullScreen () {
   }
 }
 
-const tukTuk = [play_tuk_tuk3, play_tuktuk, play_tuktuk2, play_tuktuk4, play_tuk_tuk_en_gang]
+const tukTuk = [
+  play_tuk_tuk3, play_tuktuk, play_tuktuk2, play_tuktuk4, play_tuk_tuk_en_gang,
+  play_tuk_tuk3,
+]
 const randomStuff = [
   play_nice_slow,
   play_det_jo_ren_afslapning,
@@ -94,6 +97,9 @@ const randomStuff = [
   play_lee_kom_nu,
   play_hold_boette,
   play_hvorfor_goer_vi_det_her,
+  play_det_kan_jeg_godt_li,
+  play_stille_og_rolige_bevaegelser,
+  play_jeg_kan_godt_maerke_det_3_gang,
 ]
 const keepAssDown = [
   play_but_lower_your_butt,
@@ -103,9 +109,10 @@ const keepAssDown = [
   play_ned_med_numserne,
 ]
 const dones = [
-  play_done_for_today,
+  // play_done_for_today,
   play_dette_er_den_nye_planke,
   play_nu_gider_jeg_ikke_lave_den_mere,
+  play_alright_lets_call_it_a_day,
 ]
 
 function playRandomFromArray (array, delay) {
