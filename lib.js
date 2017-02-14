@@ -35,7 +35,7 @@ function loadContent () {
           let items = response.items.map(item => item.fields)
           items.forEach((item) => {if (!item.order) item.order = 0 })
           items = items.sort((a, b) => a.order - b.order) // sort ascending
-          items.forEach(item => console.debug(item.order + ' ' + item.name))
+          items.forEach(item => console.info(item.order + ' ' + item.name + ' ' + item.duration))
           let pause = {
             duration: 1,
             name: "Skift",
@@ -51,10 +51,9 @@ function loadContent () {
             items2.push(item)
           })
           items = items2
-          items.forEach(item => console.debug(item.name))
           items.forEach((item) => {if (!item.tags) item.tags = {} }) // fix tags
-          setTimeout(() => {sessionStorage.items = JSON.stringify(items)}, 100)
-          if (sessionStorage.skip) items.forEach(item => item.duration = parseFloat(sessionStorage.skip))
+          // setTimeout(() => {sessionStorage.items = JSON.stringify(items)}, 200)
+          if (sessionStorage.skip) items.forEach(item => {item.duration = (item.tags.change) ? 1 : parseFloat(sessionStorage.skip)})
           resolve(items)
         })
         .catch(reject)
@@ -94,14 +93,19 @@ const randomStuff = [
   play_fart1,
   play_lee_kom_nu,
   play_hold_boette,
-  play_du_kommer_lige_til_din_yndlings,
+  play_hvorfor_goer_vi_det_her,
 ]
-
 const keepAssDown = [
+  play_but_lower_your_butt,
   play_husk_numserne_de_skal_ned,
   play_husk_numserne_skal_ned,
   play_ned_med_numsen,
   play_ned_med_numserne,
+]
+const dones = [
+  play_done_for_today,
+  play_dette_er_den_nye_planke,
+  play_nu_gider_jeg_ikke_lave_den_mere,
 ]
 
 function playRandomFromArray (array, delay) {

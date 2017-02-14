@@ -65,7 +65,6 @@ angular.module('app').component('plank', {
     const numColours = colours.length
 
     const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 10
-    let handle
     let running = false
     this.index = 0
     this.text = ""
@@ -101,14 +100,12 @@ angular.module('app').component('plank', {
 
     function onLastStart (item) {
       console.debug('onLastStart', item)
-      playAfter(play_whoow, 3)
     }
 
     function onLastEnd (item) {
       console.debug('Done. (onLastEnd)', item)
       play_fanfare()
-      playAfter(play_done_for_today, 1.2) // TODO random done
-      self.text = ""
+      playRandomFromArray(dones, 2.5)
       self.index = 0
       running = false
       $scope.$apply()
@@ -189,8 +186,9 @@ angular.module('app').component('plank', {
     }
 
     this.startItem = function () {
+      const item = queue[this.index]
       const index = this.index++
-      const item = queue[index]
+      console.assert(item, "There should be item")
 
       if (index === queue.length) {
         onLastStart(item, index)
@@ -208,7 +206,7 @@ angular.module('app').component('plank', {
           }
           if (item.onEnd) item.onEnd(item, index)
           onEnd(item, index)
-          if (index < queue.length) {
+          if (self.index < queue.length) {
             this.startItem()
           }
           else {
