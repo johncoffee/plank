@@ -52,9 +52,9 @@ function loadContent () {
           })
           items = items2
           items.forEach((item) => {if (!item.tags) item.tags = {} }) // fix tags
-          // setTimeout(() => {sessionStorage.items = JSON.stringify(items)}, 200)
           if (sessionStorage.skip) items.forEach(item => {item.duration = (item.tags.change) ? 1 : parseFloat(sessionStorage.skip)})
           resolve(items)
+          sessionStorage.items = JSON.stringify(items)
         })
         .catch(reject)
     }
