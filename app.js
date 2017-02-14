@@ -130,7 +130,7 @@ angular.module('app').component('plank', {
       setTimeout(() => document.getElementById('duration-visual').setAttribute('class', animationClass), grace)
 
       if (!item.tags.change) {
-        playRandomFromArray(randomStuff, item.duration * 1 / 2 + item.duration * 1 / 3 * Math.random())
+        playRandomFromArray(randomStuff, item.duration * 0.375 + item.duration * 0.3 * Math.random())
 
         if (item.tags.tuktuk) {
           playRandomFromArray(tukTuk)
