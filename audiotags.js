@@ -1,6 +1,10 @@
 console.log('inserting audio tags..');
  document.getElementById('sfx-container').innerHTML = `<audio src="sfx/7_endnu.ogg" id="7_endnu" preload="auto"></audio>
+<audio src="sfx/Blip1.ogg" id="Blip1" preload="auto"></audio>
+<audio src="sfx/Blip2.ogg" id="Blip2" preload="auto"></audio>
+<audio src="sfx/Blip3.ogg" id="Blip3" preload="auto"></audio>
 <audio src="sfx/alright_lets_call_it_a_day.ogg" id="alright_lets_call_it_a_day" preload="auto"></audio>
+<audio src="sfx/biipbiip.ogg" id="biipbiip" preload="auto"></audio>
 <audio src="sfx/but_lower_your_butt.ogg" id="but_lower_your_butt" preload="auto"></audio>
 <audio src="sfx/coin.ogg" id="coin" preload="auto"></audio>
 <audio src="sfx/complaining_is_always_good.ogg" id="complaining_is_always_good" preload="auto"></audio>

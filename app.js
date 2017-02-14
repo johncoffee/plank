@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module("app", [ 'ngMaterial' ])
+angular.module("app", ['ngMaterial'])
 
 angular.module("app").config(function ($mdThemingProvider) {
   $mdThemingProvider.theme('default')
@@ -18,7 +18,7 @@ angular.module('app').component('plankApp', {
   template: `
     <plank ng-if="$ctrl.loading === false"></plank>
 <h2 ng-if="$ctrl.loading">Loading more..</h2>`,
-  controller: function ($timeout, $window, $scope) {
+  controller: function ($timeout) {
     this.loading = (location.host.indexOf('localhost') === -1)
     $timeout(() => {
       this.loading = false
@@ -28,42 +28,47 @@ angular.module('app').component('plankApp', {
 
 angular.module('app').component('plank', {
   template: `
-<div id="duration-visual"></div>
+<div class="screen" style="z-index: 0;" md-colors="{'background': $ctrl.bgColour}"></div>
 
-<div layout="row" layout-align="center center" style="height: 100%; position:relative; z-index: 1">
-  <h1 class="md-display-3"
-   ng-bind="$ctrl.text"></h1>
-  
-  <div class="hover-button">
-    <div layout="row">   
-      <div layout="row" layout-align="end end">
-          <md-button class="md-button md-raised" 
-            ng-click="$ctrl.fullscreen()">immersive mode</md-button>
-                                   
-          <md-button class="md-button md-raised"
-           ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
-          ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
-           ng-bind="$ctrl.running() ? 'stop' : 'start'"></md-button>
+<div id="duration-visual" style="z-index: 2;" class="" md-colors="{'background': $ctrl.progressColour}"></div>
+
+<div class="screen" style="z-index: 5">
+  <div layout="row"
+       layout-align="center center"  
+       style="height: 100%;">      
+    
+    <h1 class="md-display-3" ng-bind="$ctrl.text" ng-show="$ctrl.running()"></h1>
+    
+    <div class="hover-button">
+      <div layout="row">   
+        <div layout="row" layout-align="end end">
+            <md-button class="md-button md-raised" 
+              ng-click="$ctrl.fullscreen()">immersive mode</md-button>
+                                     
+            <md-button class="md-button md-raised"
+             ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
+            ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
+             ng-bind="$ctrl.running() ? 'stop' : 'start'"></md-button>
+        </div>
       </div>
     </div>
   </div>
 </div>
   `,
   bindings: {},
-  controller: function ($timeout, $window, $scope) {
+  controller: function ($window, $scope, $mdColorPalette) {
     const self = this
     const queue = $window.queue
     this.queue = $window.queue
 
-    const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 0
+    const colours = Object.keys($mdColorPalette)
+    const numColours = colours.length
+
+    const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 10
     let handle
     let running = false
     this.index = 0
     this.text = ""
-
-    if (localStorage.dev) {
-      $timeout(() => self.start(), 200)
-    }
 
     loadContent().then(result => {
       queue.length = 0
@@ -71,6 +76,16 @@ angular.module('app').component('plank', {
       $scope.$apply()
     })
       .catch(error => console.error(error))
+
+    this.rotateColours = () => {
+      this.bgColour = colours[Math.floor(numColours * Math.random())]
+      this.progressColour = colours[Math.floor(numColours * Math.random())]
+      if (this.bgColour === this.progressColour) {
+        this.rotateColours()
+      }
+    }
+
+    this.rotateColours()
 
     this.fullscreen = function () {
       toggleFullScreen()
@@ -86,20 +101,21 @@ angular.module('app').component('plank', {
 
     function onLastStart (item) {
       console.debug('onLastStart', item)
-      setTimeout( play_whoow, 2000 )
+      playAfter(play_whoow, 3)
     }
 
     function onLastEnd (item) {
       console.debug('Done. (onLastEnd)', item)
       play_fanfare()
-      setTimeout(play_done_for_today, 1000)
+      playAfter(play_done_for_today, 1.2) // TODO random done
+      self.text = ""
       self.index = 0
       running = false
+      $scope.$apply()
     }
 
     function onFirstStart (item) {
       running = true
-      setTimeout( play_dette_er_den_nye_planke, 1900 )
       console.debug('first start', item)
     }
 
@@ -110,39 +126,57 @@ angular.module('app').component('plank', {
     function onStart (item) {
       console.debug('starts', item.name)
       self.text = item.name
-      play_coin()
-      let e = document.querySelector('#duration-visual')
+
       let animationClass = 'duration-visual--' + item.duration
       console.assert(item.duration, "should be duration")
-      e.setAttribute('class', '')
-      setTimeout(() => e.classList.add(animationClass), grace)
-      console.debug(item.tags)
-      if (!item.tags.pause) {
-        console.debug("random")
+      document.getElementById('duration-visual').setAttribute('class', '')
+      setTimeout(() => document.getElementById('duration-visual').setAttribute('class', animationClass), grace)
+
+      if (!item.tags.change) {
         playRandomFromArray(randomStuff, item.duration * 1 / 2 + item.duration * 1 / 3 * Math.random())
 
-        if(item.tags.tuktuk) {
+        if (item.tags.tuktuk) {
           playRandomFromArray(tukTuk)
         }
-        if(item.tags.diagonal) {
+        else if (item.tags.diagonal) {
           playRandomFromArray(keepAssDown)
         }
+
+        // countdown visual
+        playAfter(() => {play_Blip3(); self.text = 1}, item.duration-1.1, true)
+        playAfter(() => {play_Blip2(); self.text = 2}, item.duration-2.1, true)
+        playAfter(() => {play_Blip1(); self.text = 3}, item.duration-3.1, true)
       }
     }
 
     function onEnd (item) {
+      self.rotateColours()
+      $scope.$apply()
+      play_biipbiip()
       console.debug('ends', item)
-      self.text = ""
+    }
+
+    function playAfter(callback, seconds, apply) {
+      if (seconds > 100) console.warn("Alt for langt timeout", seconds)
+      const handle = setTimeout(() => {
+        callback()
+        if (apply && !$scope.$$phase) {
+          $scope.$apply()
+        }
+      }, seconds * 1000)
+
+      handles.add(handle)
     }
 
     this.stop = function () {
-      $timeout.cancel(handle)
-      self.text = ""
+      handles.forEach(handle => clearTimeout(handle))
+      handles = new Set()
+
       running = false
       self.index = 0
 
-      let e = document.querySelector('#duration-visual')
-      e.setAttribute('class', '')
+      document.getElementById('duration-visual')
+        .setAttribute('class', '')
     }
 
     this.start = function () {
@@ -156,19 +190,19 @@ angular.module('app').component('plank', {
 
     this.startItem = function () {
       const index = this.index++
-      const item = queue[ index ]
+      const item = queue[index]
 
       if (index === queue.length) {
         onLastStart(item, index)
       }
       if (index === 0) {
-        onFirstStart(queue[ index ], index)
+        onFirstStart(queue[index], index)
       }
       if (item.onStart) item.onStart(item, index)
       onStart(item, index)
 
       if (index <= queue.length) {
-        handle = $timeout(() => {
+        playAfter(() => {
           if (index === 0) {
             onFirstEnd(item, index)
           }
@@ -180,7 +214,7 @@ angular.module('app').component('plank', {
           else {
             onLastEnd(item, index)
           }
-        }, item.duration * 1000)
+        }, item.duration, true)
       }
     }
   }
