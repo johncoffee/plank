@@ -37,14 +37,15 @@ angular.module('app').component('plank', {
        layout-align="center center"  
        style="height: 100%;">      
     
-    <h1 class="md-display-3 header" ng-bind="$ctrl.text" ng-show="$ctrl.running()"></h1>
-    <div class="md-display-1 subheader" ng-bind="$ctrl.textTop" ng-show="$ctrl.running()"></div>
+    <h1 class="md-display-3 header" ng-bind="$ctrl.text"></h1>
+    <div class="md-display-1 subheader" ng-bind="$ctrl.textTop"></div>
     
     <div class="hover-button">
       <div layout="row">   
         <div layout="row" layout-align="end end">
             <md-button class="md-button md-raised" 
-              ng-click="$ctrl.muted = !$ctrl.muted" ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
+              ng-click="$ctrl.muted = !$ctrl.muted" 
+              ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
                                      
             <md-button class="md-button md-raised" 
               ng-click="$ctrl.fullscreen()">immersive mode</md-button>
@@ -72,7 +73,8 @@ angular.module('app').component('plank', {
     const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 10
     let running = false
     this.index = 0
-    this.text = ""
+    this.text = "PLANKEN"
+    this.textTop = "PRESS START"
 
     Object.defineProperty(this, 'muted', {
       get: () => !!localStorage.muted,
@@ -184,6 +186,9 @@ angular.module('app').component('plank', {
     }
 
     this.stop = function () {
+      self.text = ''
+      self.textTop = ''
+
       handles.forEach(handle => clearTimeout(handle))
       handles = new Set()
 
@@ -196,7 +201,11 @@ angular.module('app').component('plank', {
 
     this.start = function () {
       if (!this.running()) {
-        this.startItem()
+        this.text = 'Get ready...'
+        this.textTop = ''
+        document.getElementById('duration-visual')
+          .setAttribute('class', 'duration-visual--3')
+        playAfter( () => self.startItem(), 3, true)
       }
       else {
         console.debug("is running")
