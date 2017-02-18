@@ -43,6 +43,9 @@ angular.module('app').component('plank', {
       <div layout="row">   
         <div layout="row" layout-align="end end">
             <md-button class="md-button md-raised" 
+              ng-click="$ctrl.muted = !$ctrl.muted" ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
+                                     
+            <md-button class="md-button md-raised" 
               ng-click="$ctrl.fullscreen()">immersive mode</md-button>
                                      
             <md-button class="md-button md-raised"
@@ -69,6 +72,11 @@ angular.module('app').component('plank', {
     let running = false
     this.index = 0
     this.text = ""
+
+    Object.defineProperty(this, 'muted', {
+      get: () => !!localStorage.muted,
+      set: (value) => localStorage.muted = !!value ? 1 : ''
+    })
 
     loadContent().then(result => {
       queue.length = 0

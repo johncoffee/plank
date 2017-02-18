@@ -14,8 +14,8 @@ let audioCode = paths
 audioCode = `console.log('inserting audio tags..');\n document.getElementById('sfx-container').innerHTML = \`${audioCode}\` \n\n`;
 let functionsCode = names
     .map(name => `function play_${name}():void {
-   let e = document.getElementById("${name}") as HTMLAudioElement
-   if (e) {
+   let e = document.getElementById("${name}") as HTMLAudioElement 
+   if (!localStorage.getItem('muted') && e) {
       e.play()
    }
    else {
