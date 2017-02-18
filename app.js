@@ -61,7 +61,8 @@ angular.module('app').component('plank', {
     const queue = $window.queue
     this.queue = $window.queue
 
-    const colours = Object.keys($mdColorPalette)
+    let primary = 'deep-purple'
+    const colours = Object.keys($mdColorPalette).filter(colour => colour !== primary)
     const numColours = colours.length
 
     const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 10
