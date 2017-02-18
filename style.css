@@ -26,3 +26,13 @@ html, body { height:100%; }
     bottom: 2rem;
     right: 2rem;
 }
+
+.header {
+    margin-bottom: 0;
+}
+.subheader:empty,
+.subheader {
+    display: block;
+    min-height: 40px;
+    min-width: 1px;
+}

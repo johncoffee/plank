@@ -18,9 +18,6 @@ let functionsCode = names
    if (!localStorage.getItem('muted') && e) {
       e.play()
    }
-   else {
-      console.error('did not find audio element "${name}"')
-   }
  } `)
     .join('\n')
     + '// For copy-pasting:\n'

@@ -33,11 +33,12 @@ angular.module('app').component('plank', {
 <div id="duration-visual" style="z-index: 2;" class="" md-colors="{'background': $ctrl.progressColour}"></div>
 
 <div class="screen" style="z-index: 5">
-  <div layout="row"
+  <div layout="column"
        layout-align="center center"  
        style="height: 100%;">      
     
-    <h1 class="md-display-3" ng-bind="$ctrl.text" ng-show="$ctrl.running()"></h1>
+    <h1 class="md-display-3 header" ng-bind="$ctrl.text" ng-show="$ctrl.running()"></h1>
+    <div class="md-display-1 subheader" ng-bind="$ctrl.textTop" ng-show="$ctrl.running()"></div>
     
     <div class="hover-button">
       <div layout="row">   
@@ -64,7 +65,7 @@ angular.module('app').component('plank', {
     const queue = $window.queue
     this.queue = $window.queue
 
-    let primary = 'deep-purple'
+    let primary = 'indigo'
     const colours = Object.keys($mdColorPalette).filter(colour => colour !== primary)
     const numColours = colours.length
 
@@ -75,7 +76,7 @@ angular.module('app').component('plank', {
 
     Object.defineProperty(this, 'muted', {
       get: () => !!localStorage.muted,
-      set: (value) => localStorage.muted = !!value ? 1 : ''
+      set: (value) => localStorage.muted = (value) ? '1' : ''
     })
 
     loadContent().then(result => {
@@ -160,6 +161,14 @@ angular.module('app').component('plank', {
       $scope.$apply()
       play_biipbiip()
       console.debug('ends', item)
+      self.textTop = ""
+    }
+
+    function onHalfTime (item, index, queue) {
+      const nextItem = index+2 < queue.length ? queue[index+2] : undefined
+      if (item.tags && !item.tags.change && nextItem) {
+        self.textTop = nextItem.name
+      }
     }
 
     function playAfter(callback, seconds, apply) {
@@ -207,6 +216,8 @@ angular.module('app').component('plank', {
       }
       if (item.onStart) item.onStart(item, index)
       onStart(item, index)
+
+      playAfter( () => onHalfTime(item, index, queue), item.duration * 0.5, true)
 
       if (index <= queue.length) {
         playAfter(() => {
