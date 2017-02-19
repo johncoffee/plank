@@ -16,13 +16,37 @@ angular.module("app").config(function ($mdThemingProvider) {
 
 angular.module('app').component('plankApp', {
   template: `
-    <plank ng-if="$ctrl.loading === false"></plank>
-<h2 ng-if="$ctrl.loading">Loading more..</h2>`,
+    <sound-board ng-if="$ctrl.loading === false && $ctrl.route == ${Routes.SOUND_BOARD}"></sound-board>    
+    <plank       ng-if="$ctrl.loading === false && $ctrl.route == ${Routes.PLANKE}"></plank>
+    <h2 ng-if="$ctrl.loading">Loading more..</h2>
+`,
   controller: function ($timeout) {
     this.loading = (location.host.indexOf('localhost') === -1)
+
     $timeout(() => {
       this.loading = false
-    }, 2000)
+    }, 1500)
+
+    Object.defineProperty(this, 'route', {
+      get: () => localStorage.route,
+      set: (value) => localStorage.route = value,
+    })
+
+    if (!this.route) {
+      // default route
+      this.route = Routes.PLANKE
+    }
+
+    console.log(this.route)
+
+  },
+})
+
+angular.module('app').component('soundBoard', {
+  template: `
+    Sound board!!
+`,
+  controller: function () {
   },
 })
 
@@ -35,27 +59,31 @@ angular.module('app').component('plank', {
 <div class="screen" style="z-index: 5">
   <div layout="column"
        layout-align="center center"  
-       style="height: 100%;">      
-    
+       style="height: 100%;">          
     <h1 class="md-display-3 header" ng-bind="$ctrl.text"></h1>
     <div class="md-display-1 subheader" ng-bind="$ctrl.textTop"></div>
-    
-    <div class="hover-button">
-      <div layout="row">   
-        <div layout="row" layout-align="end end">
-            <md-button class="md-button md-raised" 
-              ng-click="$ctrl.muted = !$ctrl.muted" 
-              ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
-                                     
-            <md-button class="md-button md-raised" 
-              ng-click="$ctrl.fullscreen()">immersive mode</md-button>
-                                     
-            <md-button class="md-button md-raised"
-             ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
-            ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
-             ng-bind="$ctrl.running() ? 'stop' : 'start'"></md-button>
-        </div>
-      </div>
+  </div>
+</div>
+<div class="screen" style="z-index: 10">
+  <div class="hover-button">
+    <div layout="row" layout-align="space-between none">        
+       <div style="margin-left: 2rem">
+         <md-button class="md-button" ng-click="$ctrl.menu()">sound board</md-button>
+          
+       </div>                
+       <div style="margin-right: 2rem">               
+          <md-button class="md-button md-raised" 
+            ng-click="$ctrl.muted = !$ctrl.muted" 
+            ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
+                                   
+          <md-button class="md-button md-raised" 
+            ng-click="$ctrl.fullscreen()">immersive mode</md-button>
+                                   
+          <md-button class="md-button md-raised"
+           ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
+          ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
+           ng-bind="$ctrl.running() ? 'stop' : 'start'"></md-button>
+       </div>            
     </div>
   </div>
 </div>
@@ -81,12 +109,17 @@ angular.module('app').component('plank', {
       set: (value) => localStorage.muted = (value) ? '1' : ''
     })
 
+
     loadContent().then(result => {
       queue.length = 0
       result.forEach(item => queue.push(item))
       $scope.$apply()
     })
       .catch(error => console.error(error))
+
+    this.menu = function () {
+      localStorage.route = Routes.SOUND_BOARD
+    }
 
     this.rotateColours = () => {
       this.bgColour = colours[Math.floor(numColours * Math.random())]
@@ -118,6 +151,8 @@ angular.module('app').component('plank', {
       console.debug('Done. (onLastEnd)', item)
       play_fanfare()
       playRandomFromArray(dones, 2.5)
+      self.text = ''
+      self.textTop = ''
       self.index = 0
       running = false
       $scope.$apply()
