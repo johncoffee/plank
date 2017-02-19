@@ -118,6 +118,8 @@ angular.module('app').component('plank', {
       console.debug('Done. (onLastEnd)', item)
       play_fanfare()
       playRandomFromArray(dones, 2.5)
+      self.text = ''
+      self.textTop = ''
       self.index = 0
       running = false
       $scope.$apply()
