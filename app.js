@@ -47,6 +47,7 @@ angular.module('app').component('soundBoard', {
     Sound board!!
 `,
   controller: function () {
+    // let sounds =
   },
 })
 
