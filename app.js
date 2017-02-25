@@ -16,17 +16,11 @@ angular.module("app").config(function ($mdThemingProvider) {
 
 angular.module('app').component('plankApp', {
   template: `
-    <sound-board ng-if="$ctrl.loading === false && $ctrl.route == ${Routes.SOUND_BOARD}"></sound-board>    
-    <plank       ng-if="$ctrl.loading === false && $ctrl.route == ${Routes.PLANKE}"></plank>
-    <h2 ng-if="$ctrl.loading">Loading more..</h2>
+    <sound-board ng-if="$ctrl.route == ${Routes.SOUND_BOARD}"></sound-board>    
+    <plank       ng-if="$ctrl.route == ${Routes.PLANKE}"></plank>
+    <glossary    ng-if="$ctrl.route == ${Routes.GLOSSARY}"></glossary>
 `,
-  controller: function ($timeout) {
-    this.loading = (location.host.indexOf('localhost') === -1)
-
-    $timeout(() => {
-      this.loading = false
-    }, 1500)
-
+  controller: function () {
     Object.defineProperty(this, 'route', {
       get: () => localStorage.route,
       set: (value) => localStorage.route = value,
@@ -63,14 +57,14 @@ angular.module('app').component('soundBoard', {
     
 `,
   controller: function () {
-      this.sounds = []
-      this.items = []
+    this.sounds = []
+    this.items = []
 
-      sfxMap.forEach((v, k) => {
-        this.sounds.push(v)
-        let name = Sound[k].toString().replace(/^play_/i, '').replace(/_/g, ' ').trim()
-        this.items.push(name)
-      })
+    sfxMap.forEach((v, k) => {
+      this.sounds.push(v)
+      let name = Sound[k].toString().replace(/^play_/i, '').replace(/_/g, ' ').trim()
+      this.items.push(name)
+    })
 
     this.menu = () => {
       localStorage.route = Routes.PLANKE
@@ -85,6 +79,59 @@ angular.module('app').component('soundBoard', {
       }
     }
 
+  },
+})
+
+angular.module('app').component('glossary', {
+  template: `
+<md-content md-colors="{background: 'yellow'}" class="screen">
+    <div layout="row">
+        <div flex="0">
+            <md-button ng-click="$ctrl.menu()" class="md-raised" style="margin: 1.5rem 0 0 1rem">back</md-button>
+        </div>
+        <div flex="grow" layout-align="center center">     
+           <h1 style="text-align: center">Danske klatreord</h1>
+        </div>
+    </div>
+  
+    
+      <md-list>
+          <md-list-item class="md-2-line"  ng-repeat="item in ::$ctrl.items">
+            <div class="md-list-item-text">            
+                <h2 ng-bind="::item.term"></h2>
+                <p ng-bind="::item.description"></p>
+            </div>
+          </md-list-item>           
+      </md-list>
+  
+<div layout="column" layout-align="center center">            
+     <h2>Ændringsforslag?</h2>
+     <p>Gå på github og åben en halingsforespørgsel.</p>
+ </div>
+</md-content>    
+`,
+  controller: function () {
+    this.items = [
+      {term: "Plet", description: "Lille bitte struktur til at stå på, oftest bedst til fødder."},
+      {term: "Kneb", description: "Greb man ikke kan holde om, men knibe eller klemme."},
+      {term: "Krømp", description: "Små greb, hvor der kun er plads til fingrespidserne."},
+      {term: "Krukke", description: "Stort og komfortabelt greb med plads til begge hænder."},
+      {term: "Knæfald", description: "Metode til at bære vægt ved at dreje knæet."},
+      {term: "Sidetræk", description: "Greb der har retning til højre eller venstre."},
+      {term: "Topover", description: "Når en rute slutter med at man kravler op på en kampesten."},
+      {term: "Bakke", description: "Et rundt greb uden skarpe kanter."},
+      {term: "Tåkrog", description: "At bruge tæerne som en krog under et greb."},
+      {term: "Hælkrog", description: "At bruge hælen til at hive i et greb eller et volumen."},
+      {term: "Klip", description: "En lille hudafskrabning."},
+      {term: "Boulder, en", description: "En kampesten."},
+      {term: "Boulder, at", description: "Kampestensklatre. Kampestensklatring."},
+      {term: "Lomme", description: "En sprække man kan holde fast i."},
+      {term: "Snaps", description: "Flydende klatrekalk."},
+    ].sort((a, b) => a.term > b.term )
+
+    this.menu = () => {
+      localStorage.route = Routes.PLANKE
+    }
   },
 })
 
@@ -338,10 +385,13 @@ angular.module('app').service('bottomMenu', class {
         //   name: "exercise list",
         //   fn: angular.noop,
         // },
-        // {
-        //   name: "danske klatrebegreber",
-        //   fn: angular.noop,
-        // },
+        {
+          name: "danske klatrebegreber",
+          fn: () => {
+            $mdBottomSheet.hide()
+            localStorage.route = Routes.GLOSSARY
+          },
+        },
         {
           name: "source code",
           fn: () => window.location = "https://github.com/johncoffee/plank",

@@ -1,5 +1,6 @@
 export enum Routes {
   PLANKE = 1,
-  SOUND_BOARD
+  SOUND_BOARD,
+  GLOSSARY
 }
 
