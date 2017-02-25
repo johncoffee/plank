@@ -24,7 +24,7 @@ html, body { height:100%; }
 .hover-button {
     position: absolute;
     bottom: 2rem;
-    right: 2rem;
+    width: 100%;
 }
 
 .header {

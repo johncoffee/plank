@@ -16,13 +16,75 @@ angular.module("app").config(function ($mdThemingProvider) {
 
 angular.module('app').component('plankApp', {
   template: `
-    <plank ng-if="$ctrl.loading === false"></plank>
-<h2 ng-if="$ctrl.loading">Loading more..</h2>`,
+    <sound-board ng-if="$ctrl.loading === false && $ctrl.route == ${Routes.SOUND_BOARD}"></sound-board>    
+    <plank       ng-if="$ctrl.loading === false && $ctrl.route == ${Routes.PLANKE}"></plank>
+    <h2 ng-if="$ctrl.loading">Loading more..</h2>
+`,
   controller: function ($timeout) {
     this.loading = (location.host.indexOf('localhost') === -1)
+
     $timeout(() => {
       this.loading = false
-    }, 2000)
+    }, 1500)
+
+    Object.defineProperty(this, 'route', {
+      get: () => localStorage.route,
+      set: (value) => localStorage.route = value,
+    })
+
+    if (!this.route) {
+      // default route
+      this.route = Routes.PLANKE
+    }
+  },
+})
+
+angular.module('app').component('soundBoard', {
+  template: `
+
+<md-content md-colors="{background: 'blue'}" class="screen">
+    <div layout="row">
+        <div flex="0">
+            <md-button ng-click="$ctrl.menu()" class="md-raised" style="margin: 1.5rem 0 0 1rem">back</md-button>
+        </div>
+        <div flex="grow" layout-align="center center">     
+           <h1 style="text-align: center">The Sound Board</h1>
+        </div>
+    </div>
+  
+    <div>
+        <div ng-repeat="item in ::$ctrl.items" style="display: inline-block">
+            <md-button ng-click="$ctrl.play($index)"
+                       aria-label="::item"
+                       ng-bind="::item"></md-button>
+        </div>
+    </div>
+</md-content>
+    
+`,
+  controller: function () {
+      this.sounds = []
+      this.items = []
+
+      sfxMap.forEach((v, k) => {
+        this.sounds.push(v)
+        let name = Sound[k].toString().replace(/^play_/i, '').replace(/_/g, ' ').trim()
+        this.items.push(name)
+      })
+
+    this.menu = () => {
+      localStorage.route = Routes.PLANKE
+    }
+
+    this.play = function (index) {
+      if (this.sounds[index]) {
+        this.sounds[index]()
+      }
+      else  {
+        console.log('did not play?', index, this.sounds)
+      }
+    }
+
   },
 })
 
@@ -35,33 +97,39 @@ angular.module('app').component('plank', {
 <div class="screen" style="z-index: 5">
   <div layout="column"
        layout-align="center center"  
-       style="height: 100%;">      
-    
+       style="height: 100%;">          
     <h1 class="md-display-3 header" ng-bind="$ctrl.text"></h1>
     <div class="md-display-1 subheader" ng-bind="$ctrl.textTop"></div>
-    
-    <div class="hover-button">
-      <div layout="row">   
-        <div layout="row" layout-align="end end">
-            <md-button class="md-button md-raised" 
-              ng-click="$ctrl.muted = !$ctrl.muted" 
-              ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
-                                     
-            <md-button class="md-button md-raised" 
-              ng-click="$ctrl.fullscreen()">immersive mode</md-button>
-                                     
-            <md-button class="md-button md-raised"
-             ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
-            ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
-             ng-bind="$ctrl.running() ? 'stop' : 'start'"></md-button>
-        </div>
-      </div>
+  </div>
+</div>
+<div class="screen" style="z-index: 10">
+  <div class="hover-button">
+    <div layout="row" layout-align="space-between none">        
+       <div style="margin-left: 2rem">        
+         <md-button class="md-button" ng-click="$ctrl.menu()">resources</md-button>          
+       </div>                
+       <div style="margin-right: 2rem">               
+          <md-button class="md-button md-raised"
+            ng-click="$ctrl.muted = !$ctrl.muted" 
+       aria-label="{{$ctrl.muted ? 'unmute' : 'mute'}}"
+            ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
+                                   
+          <md-button class="md-button md-raised" 
+          aria-label="immersive mode"
+            ng-click="$ctrl.fullscreen()">immersive mode</md-button>
+                                   
+          <md-button class="md-button md-raised"
+           ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
+          ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
+           ng-bind="$ctrl.running() ? 'stop' : 'start'"
+        aria-label="$ctrl.running() ? 'stop' : 'start'"></md-button>
+       </div>            
     </div>
   </div>
 </div>
   `,
   bindings: {},
-  controller: function ($window, $scope, $mdColorPalette) {
+  controller: function ($window, $scope, $mdColorPalette, bottomMenu) {
     const self = this
     const queue = $window.queue
     this.queue = $window.queue
@@ -81,12 +149,17 @@ angular.module('app').component('plank', {
       set: (value) => localStorage.muted = (value) ? '1' : ''
     })
 
+
     loadContent().then(result => {
       queue.length = 0
       result.forEach(item => queue.push(item))
       $scope.$apply()
     })
       .catch(error => console.error(error))
+
+    this.menu = function () {
+      bottomMenu.show()
+    }
 
     this.rotateColours = () => {
       this.bgColour = colours[Math.floor(numColours * Math.random())]
@@ -247,4 +320,59 @@ angular.module('app').component('plank', {
       }
     }
   }
+})
+
+angular.module('app').service('bottomMenu', class {
+    constructor ($mdBottomSheet) {
+      this.$mdBottomSheet = $mdBottomSheet
+
+      this.items = [
+        {
+          name: "Sound Board",
+          fn: () => {
+            $mdBottomSheet.hide()
+            localStorage.route = Routes.SOUND_BOARD
+          }
+        },
+        // {
+        //   name: "exercise list",
+        //   fn: angular.noop,
+        // },
+        // {
+        //   name: "danske klatrebegreber",
+        //   fn: angular.noop,
+        // },
+        {
+          name: "source code",
+          fn: () => window.location = "https://github.com/johncoffee/plank",
+        }
+      ]
+    }
+
+    show() {
+      let self = this
+      this.$mdBottomSheet.show({
+        controller: function () {
+          this.items = self.items
+        },
+        controllerAs: "$ctrl",
+        template: `
+  <md-bottom-sheet class="md-list md-has-header">
+    <md-subheader>Super useful stuff</md-subheader>
+    <md-list>
+      <md-list-item ng-repeat="item in $ctrl.items">
+        <md-button
+            aria-label="item.name"
+            md-autofocus="$index == 0"
+            ng-click="item.fn()"
+            class="md-list-item-content">
+          <span class="md-inline-list-icon-label" ng-bind="item.name"></span>
+        </md-button>
+
+      </md-list-item>
+    </md-list>
+  </md-bottom-sheet>
+`,
+      })
+    }
 })
