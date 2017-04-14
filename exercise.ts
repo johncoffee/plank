@@ -1,6 +1,7 @@
 interface Activity {
   duration: number,
   name: string,
+  tags: Object,
   onEnd?: Function,
   onStart?: Function,
 }
@@ -9,13 +10,15 @@ var queue: Activity[] = []
 // window.queue = queue
 
 queue.push({
-  duration: 5,
-  name: "Get ready...",
+  duration: 4,
+  name: "øvelse 1",
+  tags: {},
 })
 
 queue.push({
-  duration: 3,
-  name: "Normal planke",
+  duration: 4,
+  name: "øvelse 2",
+  tags: {},
   onStart: function (self:Activity) {
     setTimeout(function() {
       play_husk_og_hold_hoften_lee()
@@ -24,8 +27,9 @@ queue.push({
 })
 
 queue.push({
-  duration: 5,
-  name: "Tuk tuk",
+  duration: 4,
+  name: "øvelse 3",
+  tags: {},
   onStart: function () {
     const tukTuk:Function[] = [play_tuk_tuk3, play_tuktuk, play_tuktuk2, play_tuktuk4, play_tuk_tuk_en_gang]
     tukTuk[Math.floor(Math.random() * tukTuk.length)]()

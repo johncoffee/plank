@@ -185,6 +185,7 @@ angular.module('app').component('plank', {
     const queue = $window.queue
     this.queue = $window.queue
 
+    const APPLY = true
     let primary = 'indigo'
     const colours = Object.keys($mdColorPalette).filter(colour => colour !== primary)
     const numColours = colours.length
@@ -192,6 +193,7 @@ angular.module('app').component('plank', {
     const grace = (navigator.userAgent.indexOf("Firefox") > -1) ? 20 : 10
     let running = false
     this.index = 0
+    this.setsLeft = 0
     this.text = "PLANKEN"
     this.textTop = "PRESS START"
 
@@ -238,19 +240,40 @@ angular.module('app').component('plank', {
       console.debug('onLastStart', item)
     }
 
-    function onLastEnd (item) {
-      console.debug('Done. (onLastEnd)', item)
+    function onGetReadyStart() {
+      console.debug('get ready START')
+      self.text = 'Get ready...'
+      self.textTop = ''
+      document.getElementById('duration-visual')
+        .setAttribute('class', 'duration-visual--3')
+    }
+
+    function onGetReadyEnd() {
+      console.debug('get ready stop')
+    }
+
+    function onSetStart() {
+      self.setsLeft--
+      console.debug('on set START')
+    }
+
+    function onSetEnd() {
+      console.debug('on set END')
       play_fanfare()
       playRandomFromArray(dones, 2.5)
-      self.text = ''
-      self.textTop = ''
-      self.index = 0
-      running = false
-      $scope.$apply()
+
+      playAfter(() => {
+        running = false
+        self.text = "PLANKEN"
+        self.textTop = "PRESS START"
+      }, 0.1, APPLY)
+    }
+
+    function onLastEnd (item) {
+      console.debug('Done. (onLastEnd)', item)
     }
 
     function onFirstStart (item) {
-      running = true
       console.debug('first start', item)
     }
 
@@ -278,9 +301,9 @@ angular.module('app').component('plank', {
         }
 
         // countdown visual
-        playAfter(() => {play_Blip3(); self.text = 1}, item.duration-1.1, true)
-        playAfter(() => {play_Blip2(); self.text = 2}, item.duration-2.1, true)
-        playAfter(() => {play_Blip1(); self.text = 3}, item.duration-3.1, true)
+        playAfter(() => {play_Blip3(); self.text = 1}, item.duration-1.1, APPLY)
+        playAfter(() => {play_Blip2(); self.text = 2}, item.duration-2.1, APPLY)
+        playAfter(() => {play_Blip1(); self.text = 3}, item.duration-3.1, APPLY)
       }
     }
 
@@ -293,7 +316,7 @@ angular.module('app').component('plank', {
     }
 
     function onHalfTime (item, index, queue) {
-      const nextItem = index+2 < queue.length ? queue[index+2] : undefined
+      const nextItem = queue[index+1]
       if (item.tags && !item.tags.change && nextItem) {
         self.textTop = nextItem.name
       }
@@ -312,8 +335,8 @@ angular.module('app').component('plank', {
     }
 
     this.stop = function () {
-      self.text = ''
-      self.textTop = ''
+      this.text = "PLANKEN"
+      this.textTop = "PRESS START"
 
       handles.forEach(handle => clearTimeout(handle))
       handles = new Set()
@@ -327,49 +350,56 @@ angular.module('app').component('plank', {
 
     this.start = function () {
       if (!this.running()) {
-        this.text = 'Get ready...'
-        this.textTop = ''
-        document.getElementById('duration-visual')
-          .setAttribute('class', 'duration-visual--3')
-        playAfter( () => self.startItem(), 3, true)
+        this.setsLeft = 3
+        running = true
+        onGetReadyStart()
+        playAfter( () => onGetReadyEnd(), 3)
+        playAfter( () => self.startItem(0, this.setsLeft > 0), 3, APPLY)
       }
       else {
         console.debug("is running")
       }
     }
 
-    this.startItem = function () {
-      const item = queue[this.index]
-      const index = this.index++
-      console.assert(item, "There should be item")
+    this.startItem = function (index, loop) {
+      const item = queue[index]
+      this.index = index
+      console.assert(item, "There should be item", index , queue)
 
       if (index === queue.length) {
         onLastStart(item, index)
       }
       if (index === 0) {
-        onFirstStart(queue[index], index)
+        onFirstStart(item, index)
+        onSetStart(item, index)
       }
       if (item.onStart) item.onStart(item, index)
       onStart(item, index)
 
-      playAfter( () => onHalfTime(item, index, queue), item.duration * 0.5, true)
+      playAfter( () => onHalfTime(item, index, queue), item.duration * 0.5, APPLY)
 
-      if (index <= queue.length) {
         playAfter(() => {
           if (index === 0) {
             onFirstEnd(item, index)
           }
           if (item.onEnd) item.onEnd(item, index)
           onEnd(item, index)
-          if (self.index < queue.length) {
-            this.startItem()
+
+          // start next or end set?
+          if (index === queue.length-1) {
+            onLastEnd(item, index)
+            if (this.setsLeft === 0) {
+              onSetEnd(item)
+            }
+            else {
+              this.startItem(0, this.setsLeft > 0)
+            }
           }
           else {
-            onLastEnd(item, index)
+            this.startItem(index + 1, loop)
           }
-        }, item.duration, true)
+        }, item.duration, APPLY)
       }
-    }
   }
 })
 

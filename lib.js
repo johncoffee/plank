@@ -10,6 +10,7 @@ document.addEventListener('keypress', (event) => {
 })
 
 function loadContent () {
+  console.debug("to shorten the time, for debugging, set sessionStorage.skip = 2 (seconds)")
   return new Promise((resolve, reject) => {
     let items = null
     try {
@@ -52,7 +53,7 @@ function loadContent () {
           })
           items = items2
           items.forEach((item) => {if (!item.tags) item.tags = {} }) // fix tags
-          if (sessionStorage.skip) items.forEach(item => {item.duration = (item.tags.change) ? 1 : parseFloat(sessionStorage.skip)})
+          if (sessionStorage.skip) items.forEach(item => {item.duration = (item.tags.change) ? 1 : parseFloat(sessionStorage.skip)}) // set duration to sessionStorage.skip unless its the "change position" item
           resolve(items)
           sessionStorage.items = JSON.stringify(items)
         })
