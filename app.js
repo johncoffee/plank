@@ -123,10 +123,12 @@ angular.module('app').component('glossary', {
       {term: "Tåkrog", description: "At bruge tæerne som en krog under et greb."},
       {term: "Hælkrog", description: "At bruge hælen til at hive i et greb eller et volumen."},
       {term: "Klip", description: "En lille hudafskrabning."},
-      {term: "Boulder, en", description: "En kampesten."},
-      {term: "Boulder, at", description: "Kampestensklatre. Kampestensklatring."},
+      {term: "Kampesten", description: "Stor sten."},
+      {term: "Kampestensklatring", description: "At klatre op ad en stor sten, uden andet sikkerhedsudstyr end en faldmåtte."},
       {term: "Lomme", description: "En sprække man kan holde fast i."},
       {term: "Snaps", description: "Flydende klatrekalk."},
+      {term: "Faldmåtte", description: "En type mobil stødpude brugt til bouldering udendørs."},
+      {term: "Undertræk", description: "Et greb der bedst bruges ved at holde oppe fra og ned, mens man stemmer imod med føderne."},
     ].sort((a, b) => a.term > b.term )
 
     this.menu = () => {
