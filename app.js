@@ -127,6 +127,8 @@ angular.module('app').component('glossary', {
       {term: "Kampestensklatring", description: "At klatre op ad en stor sten, uden andet sikkerhedsudstyr end en faldmåtte."},
       {term: "Lomme", description: "En sprække man kan holde fast i."},
       {term: "Snaps", description: "Flydende klatrekalk."},
+      {term: "Sovs", description: "Løs klatrekalk."},
+      {term: "Klatrekalk", description: "Tørringsmiddel, magnesium karbonate (MgCO3), en bedre udgave af kartoffelmel."},
       {term: "Faldmåtte", description: "En type mobil stødpude brugt til bouldering udendørs."},
       {term: "Undertræk", description: "Et greb der bedst bruges ved at holde oppe fra og ned, mens man stemmer imod med føderne."},
     ].sort((a, b) => a.term > b.term )
