@@ -21,9 +21,10 @@ angular.module('app').component('plankApp', {
     <glossary    ng-if="$ctrl.route == ${Routes.GLOSSARY}"></glossary>
 `,
   controller: function () {
+    console.log(123)
     Object.defineProperty(this, 'route', {
-      get: () => localStorage.route,
-      set: (value) => localStorage.route = value,
+      get: () => sessionStorage.route,
+      set: (value) => sessionStorage.route = value,
     })
 
     if (!this.route) {
@@ -67,7 +68,7 @@ angular.module('app').component('soundBoard', {
     })
 
     this.menu = () => {
-      localStorage.route = Routes.PLANKE
+      sessionStorage.route = Routes.PLANKE
     }
 
     this.play = function (index) {
@@ -134,7 +135,7 @@ angular.module('app').component('glossary', {
     ].sort((a, b) => a.term > b.term )
 
     this.menu = () => {
-      localStorage.route = Routes.PLANKE
+      sessionStorage.route = Routes.PLANKE
     }
   },
 })
@@ -201,7 +202,6 @@ angular.module('app').component('plank', {
       get: () => !!localStorage.muted,
       set: (value) => localStorage.muted = (value) ? '1' : ''
     })
-
 
     loadContent().then(result => {
       queue.length = 0
@@ -412,7 +412,7 @@ angular.module('app').service('bottomMenu', class {
           name: "Sound Board",
           fn: () => {
             $mdBottomSheet.hide()
-            localStorage.route = Routes.SOUND_BOARD
+            sessionStorage.route = Routes.SOUND_BOARD
           }
         },
         // {
@@ -423,7 +423,7 @@ angular.module('app').service('bottomMenu', class {
           name: "danske klatrebegreber",
           fn: () => {
             $mdBottomSheet.hide()
-            localStorage.route = Routes.GLOSSARY
+            sessionStorage.route = Routes.GLOSSARY
           },
         },
         {
