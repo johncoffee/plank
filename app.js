@@ -19,13 +19,15 @@ angular.module('app').component('plankApp', {
     <sound-board ng-if="$ctrl.route == ${Routes.SOUND_BOARD}"></sound-board>    
     <plank       ng-if="$ctrl.route == ${Routes.PLANKE}"></plank>
     <glossary    ng-if="$ctrl.route == ${Routes.GLOSSARY}"></glossary>
+    <notariusz   ng-if="$ctrl.route == ${Routes.NOTARIUSZ}"></notariusz>
 `,
   controller: function () {
     Object.defineProperty(this, 'route', {
-      get: () => localStorage.route,
-      set: (value) => localStorage.route = value,
+      get: () => sessionStorage.route,
+      set: (value) => sessionStorage.route = value,
     })
 
+    console.log(Routes[this.route])
     if (!this.route) {
       // default route
       this.route = Routes.PLANKE
@@ -67,7 +69,7 @@ angular.module('app').component('soundBoard', {
     })
 
     this.menu = () => {
-      localStorage.route = Routes.PLANKE
+      sessionStorage.route = Routes.PLANKE
     }
 
     this.play = function (index) {
@@ -134,7 +136,7 @@ angular.module('app').component('glossary', {
     ].sort((a, b) => a.term > b.term )
 
     this.menu = () => {
-      localStorage.route = Routes.PLANKE
+      sessionStorage.route = Routes.PLANKE
     }
   },
 })
@@ -412,7 +414,7 @@ angular.module('app').service('bottomMenu', class {
           name: "Sound Board",
           fn: () => {
             $mdBottomSheet.hide()
-            localStorage.route = Routes.SOUND_BOARD
+            sessionStorage.route = Routes.SOUND_BOARD
           }
         },
         // {
@@ -423,7 +425,7 @@ angular.module('app').service('bottomMenu', class {
           name: "danske klatrebegreber",
           fn: () => {
             $mdBottomSheet.hide()
-            localStorage.route = Routes.GLOSSARY
+            sessionStorage.route = Routes.GLOSSARY
           },
         },
         {
@@ -494,9 +496,9 @@ angular.module('app').component('notariusz', {
       accessToken: ACCESS_TOKEN
     })
 
-    client.getSpaces().then(spaces => {
-      saveContent(spaces.items[0]).then(results => console.log("done.") )
-    })
+    // client.getSpaces().then(spaces => {
+    //   saveContent(spaces.items[0]).then(results => console.log("done.") )
+    // })
 
     const colours = Object.keys($mdColorPalette)
     const numColours = colours.length
