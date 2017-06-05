@@ -460,3 +460,110 @@ angular.module('app').service('bottomMenu', class {
       })
     }
 })
+
+angular.module('app').component('notariusz', {
+  template: `
+<div class="screen" style="z-index: 5">
+  <div layout="row"
+       layout-align="center center"  
+       style="height: 100%;">      
+    
+    <div ng-repeat="item in $ctrl.boulderList"
+         ng-click="$ctrl.log($ctrl.logs, 'boulder', item.value)"
+         layout="row" style="height: 50%">      
+        <div ng-bind="item.label">{{item.label}} {{item.value}}</div>    
+    </div>
+    <div ng-repeat="item in $ctrl.climbingList"
+         ng-click="$ctrl.log($ctrl.logs, 'climbing', item.value)"
+         layout="row" style="height: 50%">
+        <div ng-bind="item.label">{{item.label}} {{item.value}}</div>    
+    </div>
+  
+  </div>
+</div>
+  `,
+  bindings: {},
+  controller: function ($window, $scope, $mdColorPalette) {
+    const self = this
+    const queue = $window.queue
+
+    const SPACE_ID = 'xcc5bcpq1bzl'
+    const ACCESS_TOKEN = '89a48c46c97db5304928ead53372727b725b6f97e162e135a0e2c2a6b929e165'
+    const client = contentfulManagement.createClient({
+      // space: SPACE_ID,
+      accessToken: ACCESS_TOKEN
+    })
+
+    client.getSpaces().then(spaces => {
+      saveContent(spaces.items[0]).then(results => console.log("done.") )
+    })
+
+    const colours = Object.keys($mdColorPalette)
+    const numColours = colours.length
+
+    const boulderList = [
+      {
+        colour: colours[0],
+        value: BoulderGrading.Green,
+        label: BoulderGrading[BoulderGrading.Green],
+      },
+      {
+        colour: colours[1],
+        value: BoulderGrading.Yellow,
+        label: BoulderGrading[BoulderGrading.Yellow],
+      },
+      {
+        colour: colours[3],
+        value: BoulderGrading.Blue,
+        label: BoulderGrading[BoulderGrading.Blue],
+      },
+    ]
+    const climbingList = [
+      {
+        colour: colours[0],
+        value: ClimbingGrading.Five_C,
+        label: ClimbingGrading[ClimbingGrading.Five_C],
+      },
+      {
+        colour: colours[1],
+        value: ClimbingGrading.Six_A,
+        label: ClimbingGrading[ClimbingGrading.Six_A],
+      },
+      {
+        colour: colours[3],
+        value: ClimbingGrading.Six_B,
+        label: ClimbingGrading[ClimbingGrading.Six_B],
+      },
+      {
+        colour: colours[3],
+        value: ClimbingGrading.Six_B_Plus,
+        label: ClimbingGrading[ClimbingGrading.Six_B_Plus],
+      },
+    ]
+    this.boulderList = boulderList
+    this.climbingList = climbingList
+    this.day = 0
+
+    const logs = this.logs = [
+      {
+        sessionStartDate: new Date(),
+        climbing: {},
+        bouldering: {}
+      }
+    ]
+
+    this.log = function (logs, category, value) {
+      if (!logs[this.day]) {
+        logs[this.day] = {}
+      }
+      logs[this.day][category] = value
+    }
+
+    this.forwards = function () {
+      this.day++
+    }
+    this.backwards = function () {
+      this.day--
+    }
+  }
+})
