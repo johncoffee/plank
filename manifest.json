@@ -1,0 +1,17 @@
+{
+  "name": "Plank",
+  "short_name": "Plank",
+
+  "lang": "da",
+
+  "background_color": "#ff8000",
+  "display": "standalone",
+
+  "icons": [
+    {
+      "src": "icon144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ]
+}
