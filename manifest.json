@@ -4,8 +4,8 @@
 
   "lang": "da",
 
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/plank/",
+  "scope": "/plank/",
 
   "display": "standalone",
   "background_color": "#ff4000",
@@ -13,7 +13,7 @@
 
   "icons": [
     {
-      "src": "/icon144.png",
+      "src": "icon144.png",
       "sizes": "144x144",
       "type": "image/png"
     }
