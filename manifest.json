@@ -4,12 +4,16 @@
 
   "lang": "da",
 
-  "background_color": "#ff8000",
+  "start_url": "/",
+  "scope": "/",
+
   "display": "standalone",
+  "background_color": "#ff4000",
+  "theme_color": "#2040ff",
 
   "icons": [
     {
-      "src": "icon144.png",
+      "src": "/icon144.png",
       "sizes": "144x144",
       "type": "image/png"
     }
