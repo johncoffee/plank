@@ -33,7 +33,10 @@ function loadContent () {
       })
       client.getEntries()
         .then((response) => {
-          let items = response.items.map(item => item.fields)
+        console.log(response.items)
+          let items = response.items
+            .filter(item => item.fields.set_id === sessionStorage.set_id)
+            .map(item => item.fields)
           items.forEach((item) => {if (!item.order) item.order = 0 })
           items = items.sort((a, b) => a.order - b.order) // sort ascending
           items.forEach(item => console.info(item.order + ' ' + item.name + ' ' + item.duration))
