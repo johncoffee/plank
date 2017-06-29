@@ -155,3 +155,13 @@ function playRandomFromArray (array, delay) {
   document.head.appendChild(e)
   console.debug('inserted animation classes')
 })()
+
+function uninstall () {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    if (!Array.from(registrations).length ) console.log("no service workers")
+
+    for(let registration of registrations) {
+      registration.unregister()
+      console.debug("service worker uninstalled", registration)
+    } })
+}

@@ -432,7 +432,11 @@ angular.module('app').service('bottomMenu', class {
         {
           name: "source code",
           fn: () => window.location = "https://github.com/johncoffee/plank",
-        }
+        },
+        {
+          name: "Uninstall app",
+          fn: ()=> window.uninstall()
+        },
       ]
     }
 
