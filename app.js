@@ -283,7 +283,7 @@ angular.module('app').component('plank', {
       console.debug('first end', item)
     }
 
-    function onStart (item) {
+    function onStart (item, index) {
       console.debug('starts', item.name)
       self.text = item.name
 
@@ -307,6 +307,11 @@ angular.module('app').component('plank', {
         playAfter(() => {play_Blip2(); self.text = 2}, item.duration-2.1, APPLY)
         playAfter(() => {play_Blip1(); self.text = 3}, item.duration-3.1, APPLY)
       }
+
+      const nextItem = queue[index+2]
+      if (nextItem && !nextItem.tags.change) {
+        self.textTop = nextItem.name
+      }
     }
 
     function onEnd (item) {
@@ -318,10 +323,6 @@ angular.module('app').component('plank', {
     }
 
     function onHalfTime (item, index, queue) {
-      const nextItem = queue[index+1]
-      if (item.tags && !item.tags.change && nextItem) {
-        self.textTop = nextItem.name
-      }
     }
 
     function playAfter(callback, seconds, apply) {
