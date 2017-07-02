@@ -1,45 +1,35 @@
 "use strict"
 
-self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url)
+self.addEventListener('activate', function(event) {
+  var cacheWhitelist = ['v1'];
 
-  console.log(url.pathname)
+  console.debug("Running clean up..")
+  event.waitUntil(
+    caches.keys().then(function(keyList) {
+      return Promise.all(keyList.map(function(key) {
+        if (cacheWhitelist.indexOf(key) === -1) {
+          console.debug("Removed old cache "+key)
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
+});
 
-  if (url.origin === location.origin && url.pathname === "/plank/") {
-    event.respondWith(caches.match("/plank/index.html"))
-    return
-  }
-
-  event.respondWith(caches.match(event.request)
-    .then(response => response || fetch(event.request))
-  )
-
-})
-
-const files = [
-  "//npmcdn.com/contentful@3.3.5/browser-dist/contentful.min.js",
-  "//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js",
-  "//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.min.js",
-  "//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-aria.min.js",
-  "//ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js",
-  "//ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css",
-
-  "Routes.js",
-  "exercise.js",
-  "play.js",
-  "lib.js",
-  "enums.js",
-  "saveContent.js",
-
-  "style.css",
-  "app.js",
-  "audiotags.js",
-]
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(resp) {
+      return resp || fetch(event.request).then(function(response) {
+          return caches.open('v1').then(function(cache) {
+            console.debug("Saved to cache " + event.request.url)
+            cache.put(event.request, response.clone());
+            return response;
+          });
+        });
+    })
+  );
+});
 
 self.addEventListener('install', event => {
-  console.log(event)
-
-  event.waitUntil( caches.open("static-v0.1")
-      .then(cache => cache.addAll(files))
-  )
+  console.debug('install event.')
 })
