@@ -166,11 +166,7 @@ angular.module('app').component('plank', {
             ng-click="$ctrl.muted = !$ctrl.muted" 
        aria-label="{{$ctrl.muted ? 'unmute' : 'mute'}}"
             ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
-                                   
-          <md-button class="md-button md-raised" 
-          aria-label="immersive mode"
-            ng-click="$ctrl.fullscreen()">immersive mode</md-button>
-                                   
+                                                                    
           <md-button class="md-button md-raised"
            ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
           ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
@@ -224,14 +220,6 @@ angular.module('app').component('plank', {
     }
 
     this.rotateColours()
-
-    this.fullscreen = function () {
-      toggleFullScreen()
-      if (!self.hasPlayed) {
-        self.hasPlayed = true
-        play_vi_venter_lige_paa_oliver()
-      }
-    }
 
     this.running = function () {
       return running
@@ -417,10 +405,6 @@ angular.module('app').service('bottomMenu', class {
             sessionStorage.route = Routes.SOUND_BOARD
           }
         },
-        // {
-        //   name: "exercise list",
-        //   fn: angular.noop,
-        // },
         {
           name: "danske klatrebegreber",
           fn: () => {
@@ -429,12 +413,12 @@ angular.module('app').service('bottomMenu', class {
           },
         },
         {
-          name: "source code",
-          fn: () => window.location = "https://github.com/johncoffee/plank",
-        },
-        {
           name: "Uninstall app",
           fn: ()=> window.uninstall()
+        },
+        {
+          name: "Full screen",
+          fn: ()=> window.toggleFullScreen()
         },
       ]
     }
