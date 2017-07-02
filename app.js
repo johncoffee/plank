@@ -22,7 +22,6 @@ angular.module('app').component('plankApp', {
     <notariusz   ng-if="$ctrl.route == ${Routes.NOTARIUSZ}"></notariusz>
 `,
   controller: function () {
-    console.log(123)
     Object.defineProperty(this, 'route', {
       get: () => sessionStorage.route,
       set: (value) => sessionStorage.route = value,
