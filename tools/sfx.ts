@@ -40,7 +40,7 @@ let functionsCode = names
 // console.log(audioCode)
 // writeFileSync(join(__dirname, '../SfxEnum.ts'), enumCode, console.log)
 
-writeFileSync(join(__dirname, '../audiotags.js'), audioCode, console.log)
-writeFileSync(join(__dirname, '../play.ts'), functionsCode, console.log)
+writeFileSync(join(__dirname, '../src/audiotags.js'), audioCode, console.log)
+writeFileSync(join(__dirname, '../src/play.ts'), functionsCode, console.log)
 
 // let e = new Map<Sfx, HTMLAudioElement>()

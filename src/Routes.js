@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Routes;
 (function (Routes) {
     Routes[Routes["PLANKE"] = 1] = "PLANKE";

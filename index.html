@@ -5,6 +5,17 @@
 
 <meta charset="UTF-8">
 <title>Plank</title>
+<script>
+var exports = {}
+
+if (!sessionStorage.swOff) {
+    navigator.serviceWorker.register('service-worker.js', { scope: './' })
+      .then(function (registration) {
+      }).catch(function (error) {
+      alert("service worker FAILED")
+    });
+}
+</script>
 
 <!--<script src="node_modules/contentful/browser-dist/contentful.js"></script>-->
 <!--<script src="node_modules/angular/angular.min.js"></script>-->
@@ -17,33 +28,22 @@
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-aria.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.js"></script>
-<script>
-  var exports = {}
-</script>
-<script src="Routes.js"></script>
-<script src="exercise.js"></script>
-<script src="play.js"></script>
-<script src="lib.js"></script>
-<script src="enums.js"></script>
-<script src="saveContent.js"></script>
+<script src="src/Routes.js"></script>
+<script src="src/exercise.js"></script>
+<script src="src/play.js"></script>
+<script src="src/lib.js"></script>
+<script src="src/enums.js"></script>
+<script src="src/saveContent.js"></script>
 
 <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
 <!--<link rel="stylesheet" href="node_modules/angular-material/angular-material.css">-->
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="src/style.css">
 
 <!--PWA stuff-->
-<link rel="shortcut icon" sizes="144x144" href="icon144.png">
+<link rel="shortcut icon" sizes="144x144" href="images/icon144.png">
 <meta name="theme-color" content="#3f51b5"> <!-- Indigo 500 -->
 <link rel="manifest" href="manifest.json">
-<script>
-navigator.serviceWorker.register('service-worker.js', {scope: './'})
-    .then(function(registration) {
-}).catch(function(error) {
-    alert("service worker FAILED")
-});
-
-</script>
-
+<script src="src/app.js"></script>
 </head>
 <body ng-app="app">
 
@@ -51,10 +51,7 @@ navigator.serviceWorker.register('service-worker.js', {scope: './'})
     <h1 class="md-headline">Loading...</h1>
 </plank-app>
 
-<script src="app.js"></script>
-
 <div id="sfx-container"></div>
-<script src="audiotags.js"></script>
-
+<script src="src/audiotags.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const fs_1 = require("fs");
 const walkSync = require('walk-sync');
@@ -30,6 +31,6 @@ let functionsCode = names
     + names.map(name => `sfxMap.set(Sound.play_${name},  play_${name} )`).join('\n');
 // console.log(audioCode)
 // writeFileSync(join(__dirname, '../SfxEnum.ts'), enumCode, console.log)
-fs_1.writeFileSync(path_1.join(__dirname, '../audiotags.js'), audioCode, console.log);
-fs_1.writeFileSync(path_1.join(__dirname, '../play.ts'), functionsCode, console.log);
+fs_1.writeFileSync(path_1.join(__dirname, '../src/audiotags.js'), audioCode, console.log);
+fs_1.writeFileSync(path_1.join(__dirname, '../src/play.ts'), functionsCode, console.log);
 // let e = new Map<Sfx, HTMLAudioElement>() 
