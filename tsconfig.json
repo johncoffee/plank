@@ -12,7 +12,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "preserveConstEnums": true,
-    "target": "ES6",
+    "target": "es2016",
     "sourceMap": false,
     "pretty": true,
     "noEmitOnError": true
