@@ -23,13 +23,11 @@ angular.module('app').component('plankApp', {
   controller: function () {
     Object.defineProperty(this, 'route', {
       get: () => sessionStorage.route,
-      set: (value) => sessionStorage.route = value,
     })
 
-    console.log(Routes[this.route])
-    if (!this.route) {
+    if (!Routes[sessionStorage.route]) {
       // default route
-      this.route = Routes.PLANKE
+      sessionStorage.route = Routes.PLANKE
     }
   },
 })
