@@ -19,7 +19,6 @@ angular.module('app').component('plankApp', {
     <sound-board ng-if="$ctrl.route == ${Routes.SOUND_BOARD}"></sound-board>    
     <plank       ng-if="$ctrl.route == ${Routes.PLANKE}"></plank>
     <glossary    ng-if="$ctrl.route == ${Routes.GLOSSARY}"></glossary>
-    <notariusz   ng-if="$ctrl.route == ${Routes.NOTARIUSZ}"></notariusz>
 `,
   controller: function () {
     Object.defineProperty(this, 'route', {
@@ -76,7 +75,7 @@ angular.module('app').component('soundBoard', {
       if (this.sounds[index]) {
         this.sounds[index]()
       }
-      else  {
+      else {
         console.log('did not play?', index, this.sounds)
       }
     }
@@ -91,7 +90,7 @@ angular.module('app').component('glossary', {
         <div flex="0">
             <md-button ng-click="$ctrl.menu()" class="md-raised" style="margin: 1.5rem 0 0 1rem">back</md-button>
         </div>
-        <div flex="grow" layout-align="center center">     
+        <div flex="grow">     
            <h1 style="text-align: center">Danske klatreord</h1>
         </div>
     </div>
@@ -106,10 +105,17 @@ angular.module('app').component('glossary', {
           </md-list-item>           
       </md-list>
   
-<div layout="column" layout-align="center center">            
-     <h2>Ændringsforslag?</h2>
-     <p>Gå på github og åben en halingsforespørgsel.</p>
- </div>
+   <div layout="row">
+      <div>
+        <p style="margin-left: 2rem;">
+          <md-button ng-click="$ctrl.menu()" class="md-raised">back</md-button>
+        </p>
+      </div>
+      <div flex="grow">               
+        <p style="text-align: center">Ændringsforslag? <a href="https://github.com/johncoffee/plank">Åben en halingsforespørgsel.</a></p>
+      </div>
+    </div>
+  
 </md-content>    
 `,
   controller: function () {
@@ -126,14 +132,23 @@ angular.module('app').component('glossary', {
       {term: "Hælkrog", description: "At bruge hælen til at hive i et greb eller et volumen."},
       {term: "Klip", description: "En lille hudafskrabning."},
       {term: "Kampesten", description: "Stor sten."},
-      {term: "Kampestensklatring", description: "At klatre op ad en stor sten, uden andet sikkerhedsudstyr end en faldmåtte."},
+      {
+        term: "Kampestensklatring",
+        description: "At klatre op ad en stor sten, uden andet sikkerhedsudstyr end en faldmåtte."
+      },
       {term: "Lomme", description: "En sprække man kan holde fast i."},
       {term: "Snaps", description: "Flydende klatrekalk."},
       {term: "Sovs", description: "Løs klatrekalk."},
-      {term: "Klatrekalk", description: "Tørringsmiddel, magnesium karbonate (MgCO3), en bedre udgave af kartoffelmel."},
+      {
+        term: "Klatrekalk",
+        description: "Tørringsmiddel, magnesium karbonate (MgCO3), en bedre udgave af kartoffelmel."
+      },
       {term: "Faldmåtte", description: "En type mobil stødpude brugt til bouldering udendørs."},
-      {term: "Undertræk", description: "Et greb der bedst bruges ved at holde oppe fra og ned, mens man stemmer imod med føderne."},
-    ].sort((a, b) => a.term > b.term )
+      {
+        term: "Undertræk",
+        description: "Et greb der bedst bruges ved at holde oppe fra og ned, mens man stemmer imod med føderne."
+      },
+    ].sort((a, b) => a.term > b.term)
 
     this.menu = () => {
       sessionStorage.route = Routes.PLANKE
@@ -192,20 +207,30 @@ angular.module('app').component('plank', {
     let running = false
     this.index = 0
     this.setsLeft = 0
-    this.text = "PLANKEN"
-    this.textTop = "PRESS START"
+    this.text = "LOADING..."
+    this.textTop = ""
 
     Object.defineProperty(this, 'muted', {
       get: () => !!localStorage.muted,
       set: (value) => localStorage.muted = (value) ? '1' : ''
     })
 
-    loadContent().then(result => {
+    try {
+      loadRemoteContents()
+    }
+    catch (e) {
+      console.error(e)
+    }
+
+    async function loadRemoteContents () {
       queue.length = 0
+      const result = await loadContent()
       result.forEach(item => queue.push(item))
+      console.log(queue)
+      self.text = "PLANKEN"
+      self.textTop = "PRESS START"
       $scope.$apply()
-    })
-      .catch(error => console.error(error))
+    }
 
     this.menu = function () {
       bottomMenu.show()
@@ -229,7 +254,7 @@ angular.module('app').component('plank', {
       console.debug('onLastStart', item)
     }
 
-    function onGetReadyStart() {
+    function onGetReadyStart () {
       console.debug('get ready START')
       self.text = 'Get ready...'
       self.textTop = ''
@@ -237,16 +262,16 @@ angular.module('app').component('plank', {
         .setAttribute('class', 'duration-visual--3')
     }
 
-    function onGetReadyEnd() {
+    function onGetReadyEnd () {
       console.debug('get ready stop')
     }
 
-    function onSetStart() {
+    function onSetStart () {
       self.setsLeft--
       console.debug('on set START')
     }
 
-    function onSetEnd() {
+    function onSetEnd () {
       console.debug('on set END')
       play_fanfare()
       playRandomFromArray(dones, 2.5)
@@ -290,12 +315,21 @@ angular.module('app').component('plank', {
         }
 
         // countdown visual
-        playAfter(() => {play_Blip3(); self.text = 1}, item.duration-1.1, APPLY)
-        playAfter(() => {play_Blip2(); self.text = 2}, item.duration-2.1, APPLY)
-        playAfter(() => {play_Blip1(); self.text = 3}, item.duration-3.1, APPLY)
+        playAfter(() => {
+          play_Blip3();
+          self.text = 1
+        }, item.duration - 1.1, APPLY)
+        playAfter(() => {
+          play_Blip2();
+          self.text = 2
+        }, item.duration - 2.1, APPLY)
+        playAfter(() => {
+          play_Blip1();
+          self.text = 3
+        }, item.duration - 3.1, APPLY)
       }
 
-      const nextItem = queue[index+2]
+      const nextItem = queue[index + 2]
       if (nextItem && !nextItem.tags.change) {
         self.textTop = nextItem.name
       }
@@ -312,7 +346,7 @@ angular.module('app').component('plank', {
     function onHalfTime (item, index, queue) {
     }
 
-    function playAfter(callback, seconds, apply) {
+    function playAfter (callback, seconds, apply) {
       if (seconds > 100) console.warn("Alt for langt timeout", seconds)
       const handle = setTimeout(() => {
         callback()
@@ -343,8 +377,8 @@ angular.module('app').component('plank', {
         this.setsLeft = 3
         running = true
         onGetReadyStart()
-        playAfter( () => onGetReadyEnd(), 3)
-        playAfter( () => self.startItem(0, this.setsLeft > 0), 3, APPLY)
+        playAfter(() => onGetReadyEnd(), 3)
+        playAfter(() => self.startItem(0, this.setsLeft > 0), 3, APPLY)
       }
       else {
         console.debug("is running")
@@ -354,7 +388,7 @@ angular.module('app').component('plank', {
     this.startItem = function (index, loop) {
       const item = queue[index]
       this.index = index
-      console.assert(item, "There should be item", index , queue)
+      console.assert(item, "There should be item", index, queue)
 
       if (index === queue.length) {
         onLastStart(item, index)
@@ -366,71 +400,76 @@ angular.module('app').component('plank', {
       if (item.onStart) item.onStart(item, index)
       onStart(item, index)
 
-      playAfter( () => onHalfTime(item, index, queue), item.duration * 0.5, APPLY)
+      playAfter(() => onHalfTime(item, index, queue), item.duration * 0.5, APPLY)
 
-        playAfter(() => {
-          if (index === 0) {
-            onFirstEnd(item, index)
-          }
-          if (item.onEnd) item.onEnd(item, index)
-          onEnd(item, index)
+      playAfter(() => {
+        if (index === 0) {
+          onFirstEnd(item, index)
+        }
+        if (item.onEnd) item.onEnd(item, index)
+        onEnd(item, index)
 
-          // start next or end set?
-          if (index === queue.length-1) {
-            onLastEnd(item, index)
-            if (this.setsLeft === 0) {
-              onSetEnd(item)
-            }
-            else {
-              this.startItem(0, this.setsLeft > 0)
-            }
+        // start next or end set?
+        if (index === queue.length - 1) {
+          onLastEnd(item, index)
+          if (this.setsLeft === 0) {
+            onSetEnd(item)
           }
           else {
-            this.startItem(index + 1, loop)
+            this.startItem(0, this.setsLeft > 0)
           }
-        }, item.duration, APPLY)
-      }
+        }
+        else {
+          this.startItem(index + 1, loop)
+        }
+      }, item.duration, APPLY)
+    }
+
+    $scope.$on('$destroy', () => {
+      this.stop()
+      console.debug(`scope destroyed. Stopped things.`)
+    })
   }
 })
 
 angular.module('app').service('bottomMenu', class {
-    constructor ($mdBottomSheet) {
-      this.$mdBottomSheet = $mdBottomSheet
+  constructor ($mdBottomSheet) {
+    this.$mdBottomSheet = $mdBottomSheet
 
-      this.items = [
-        {
-          name: "Sound Board",
-          fn: () => {
-            $mdBottomSheet.hide()
-            sessionStorage.route = Routes.SOUND_BOARD
-          }
+    this.items = [
+      {
+        name: "Sound Board",
+        fn: () => {
+          $mdBottomSheet.hide()
+          sessionStorage.route = Routes.SOUND_BOARD
+        }
+      },
+      {
+        name: "danske klatrebegreber",
+        fn: () => {
+          $mdBottomSheet.hide()
+          sessionStorage.route = Routes.GLOSSARY
         },
-        {
-          name: "danske klatrebegreber",
-          fn: () => {
-            $mdBottomSheet.hide()
-            sessionStorage.route = Routes.GLOSSARY
-          },
-        },
-        {
-          name: "Uninstall app",
-          fn: ()=> window.uninstall()
-        },
-        {
-          name: "Full screen",
-          fn: ()=> window.toggleFullScreen()
-        },
-      ]
-    }
+      },
+      {
+        name: "Uninstall app",
+        fn: () => window.uninstall()
+      },
+      {
+        name: "Full screen",
+        fn: () => window.toggleFullScreen()
+      },
+    ]
+  }
 
-    show() {
-      let self = this
-      this.$mdBottomSheet.show({
-        controller: function () {
-          this.items = self.items
-        },
-        controllerAs: "$ctrl",
-        template: `
+  show () {
+    let self = this
+    this.$mdBottomSheet.show({
+      controller: function () {
+        this.items = self.items
+      },
+      controllerAs: "$ctrl",
+      template: `
   <md-bottom-sheet class="md-list md-has-header">
     <md-subheader>Super useful stuff</md-subheader>
     <md-list>
@@ -447,113 +486,6 @@ angular.module('app').service('bottomMenu', class {
     </md-list>
   </md-bottom-sheet>
 `,
-      })
-    }
-})
-
-angular.module('app').component('notariusz', {
-  template: `
-<div class="screen" style="z-index: 5">
-  <div layout="row"
-       layout-align="center center"  
-       style="height: 100%;">      
-    
-    <div ng-repeat="item in $ctrl.boulderList"
-         ng-click="$ctrl.log($ctrl.logs, 'boulder', item.value)"
-         layout="row" style="height: 50%">      
-        <div ng-bind="item.label">{{item.label}} {{item.value}}</div>    
-    </div>
-    <div ng-repeat="item in $ctrl.climbingList"
-         ng-click="$ctrl.log($ctrl.logs, 'climbing', item.value)"
-         layout="row" style="height: 50%">
-        <div ng-bind="item.label">{{item.label}} {{item.value}}</div>    
-    </div>
-  
-  </div>
-</div>
-  `,
-  bindings: {},
-  controller: function ($window, $scope, $mdColorPalette) {
-    const self = this
-    const queue = $window.queue
-
-    const SPACE_ID = 'xcc5bcpq1bzl'
-    const ACCESS_TOKEN = '89a48c46c97db5304928ead53372727b725b6f97e162e135a0e2c2a6b929e165'
-    const client = contentfulManagement.createClient({
-      // space: SPACE_ID,
-      accessToken: ACCESS_TOKEN
     })
-
-    // client.getSpaces().then(spaces => {
-    //   saveContent(spaces.items[0]).then(results => console.log("done.") )
-    // })
-
-    const colours = Object.keys($mdColorPalette)
-    const numColours = colours.length
-
-    const boulderList = [
-      {
-        colour: colours[0],
-        value: BoulderGrading.Green,
-        label: BoulderGrading[BoulderGrading.Green],
-      },
-      {
-        colour: colours[1],
-        value: BoulderGrading.Yellow,
-        label: BoulderGrading[BoulderGrading.Yellow],
-      },
-      {
-        colour: colours[3],
-        value: BoulderGrading.Blue,
-        label: BoulderGrading[BoulderGrading.Blue],
-      },
-    ]
-    const climbingList = [
-      {
-        colour: colours[0],
-        value: ClimbingGrading.Five_C,
-        label: ClimbingGrading[ClimbingGrading.Five_C],
-      },
-      {
-        colour: colours[1],
-        value: ClimbingGrading.Six_A,
-        label: ClimbingGrading[ClimbingGrading.Six_A],
-      },
-      {
-        colour: colours[3],
-        value: ClimbingGrading.Six_B,
-        label: ClimbingGrading[ClimbingGrading.Six_B],
-      },
-      {
-        colour: colours[3],
-        value: ClimbingGrading.Six_B_Plus,
-        label: ClimbingGrading[ClimbingGrading.Six_B_Plus],
-      },
-    ]
-    this.boulderList = boulderList
-    this.climbingList = climbingList
-    this.day = 0
-
-    const logs = this.logs = [
-      {
-        sessionStartDate: new Date(),
-        climbing: {},
-        bouldering: {}
-      }
-    ]
-
-    this.log = function (logs, category, value) {
-      if (!logs[this.day]) {
-        logs[this.day] = {}
-      }
-      logs[this.day][category] = value
-    }
-
-    this.forwards = function () {
-      this.day++
-    }
-    this.backwards = function () {
-      this.day--
-    }
   }
 })

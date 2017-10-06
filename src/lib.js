@@ -148,11 +148,12 @@ function playRandomFromArray (array, delay) {
 
   for (let i = 1; i < 60; i++) {
     classes.push(`
-  .duration-visual--${i} {
-    animation-timing-function: cubic-bezier(.42,.24,.59,.45);
-    animation-name: my_animation;
-  }
-  .duration-visual--${i} { animation-duration: ${i}s }`)
+    .duration-visual--${i} {
+      animation-timing-function: cubic-bezier(.42,.24,.59,.45);
+      animation-name: my_animation;
+    }
+    .duration-visual--${i} { animation-duration: ${i}s }
+    `)
   }
 
   const e = document.createElement('style')
