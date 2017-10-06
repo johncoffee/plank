@@ -25,9 +25,9 @@ let functionsCode = names
    }
  } `)
     .join('\n')
-  // + '// For copy-pasting:\n'
-  // + names.map(name => `  // play_${name},`)
-  //   .join('\n')
+  + '// For copy-pasting:\n'
+  + names.map(name => `  // play_${name},`)
+        .join('\n')
    +  `
    enum Sound {
      ${names.map(name => "play_"+name).join(',\n')}
@@ -40,7 +40,7 @@ let functionsCode = names
 // console.log(audioCode)
 // writeFileSync(join(__dirname, '../SfxEnum.ts'), enumCode, console.log)
 
-writeFileSync(join(__dirname, '../src/audiotags.js'), audioCode, console.log)
-writeFileSync(join(__dirname, '../src/play.ts'), functionsCode, console.log)
+writeFileSync(join(__dirname, '../src/audiotags.js'), audioCode)
+writeFileSync(join(__dirname, '../src/play.ts'), functionsCode)
 
 // let e = new Map<Sfx, HTMLAudioElement>()
