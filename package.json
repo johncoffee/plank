@@ -5,7 +5,7 @@
   "repository": "none",
   "main": "index.js",
   "scripts": {
-    "publish-ipfs": "",
+    "postversion": "make -f node_modules/ipfs-pwa-tools/Makefile add",
     "build": "npm run ts-compile",
     "ts-compile": "node node_modules/typescript/bin/tsc -p ./tsconfig.json"
   },
