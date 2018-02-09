@@ -9,60 +9,30 @@ document.addEventListener('keypress', (event) => {
   }
 })
 
-function loadContent () {
-  console.debug("to shorten the time, for debugging, set sessionStorage.skip = 2 (seconds)")
-  return new Promise((resolve, reject) => {
-    let items = null
-    try {
-      if (sessionStorage.items) {
-        items = JSON.parse(sessionStorage.items)
-      }
-    }
-    catch (e) {
-      console.error(e.message)
-    }
-    if (items !== null) {
-      resolve(items)
-    }
-    else {
-      const SPACE_ID = 'xcc5bcpq1bzl'
-      const ACCESS_TOKEN = '7c2d47447f69007013be6ea72b531db3748dd971f6acbcd3f4d831491f6f9013'
-      const client = contentful.createClient({
-        space: SPACE_ID,
-        accessToken: ACCESS_TOKEN
-      })
-      client.getEntries()
-        .then((response) => {
-        console.log(response.items)
-          let items = response.items
-            .filter(item => item.fields.set_id === sessionStorage.set_id)
-            .map(item => item.fields)
-          items.forEach((item) => {if (!item.order) item.order = 0 })
-          items = items.sort((a, b) => a.order - b.order) // sort ascending
-          items.forEach(item => console.info(item.order + ' ' + item.name + ' ' + item.duration))
-          let pause = {
-            duration: 1,
-            name: "Skift",
-            tags: {
-              change: 1,
-            },
-          }
-          let items2 = []
-          items.forEach((item, index) => {
-            if (index > 0) {
-              items2.push(pause)
-            }
-            items2.push(item)
-          })
-          items = items2
-          items.forEach((item) => {if (!item.tags) item.tags = {} }) // fix tags
-          if (sessionStorage.skip) items.forEach(item => {item.duration = (item.tags.change) ? 1 : parseFloat(sessionStorage.skip)}) // set duration to sessionStorage.skip unless its the "change position" item
-          resolve(items)
-          sessionStorage.items = JSON.stringify(items)
-        })
-        .catch(reject)
-    }
+async function loadContent () {
+  const req = await fetch("data/items.json")
+  console.log(req)
+  let items = await req.json()
+  console.log(items)
+
+  // checks
+  items.forEach(item => {
+    console.assert(item.tags instanceof Object, `item should have tags`)
   })
+
+  // set duration to sessionStorage.skip unless its the "change position" item
+  if (sessionStorage.skip) {
+    items.forEach(item => {
+      if (item.duration > sessionStorage.skip) {
+        item.duration = sessionStorage.skip
+      }
+    })
+  }
+
+  items.forEach(item => console.info((item.order ? item.order+ ' ' : "") + item.name + ' ' + item.duration))
+
+  return items
+
 }
 
 function toggleFullScreen () {
