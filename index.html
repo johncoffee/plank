@@ -9,7 +9,7 @@
 var exports = {}
 
 if (sessionStorage.swLocal || (location.host === "johncoffee.github.io" && !sessionStorage.swOff)) {
-    navigator.serviceWorker.register('src/service-worker.js', { scope: './' })
+    navigator.serviceWorker.register('service-worker.js', { scope: './' })
       .then(function (registration) {
       }).catch(function (error) {
       console.error(error)
