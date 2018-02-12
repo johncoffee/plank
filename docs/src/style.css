@@ -1,0 +1,38 @@
+html, body { height:100%; }
+
+#duration-visual,
+.screen {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+#duration-visual {
+    width: 0;
+    overflow: hidden;
+}
+
+@keyframes my_animation {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.hover-button {
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+}
+
+.header {
+    margin-bottom: 0;
+}
+.subheader:empty,
+.subheader {
+    display: block;
+    min-height: 40px;
+    min-width: 1px;
+}
