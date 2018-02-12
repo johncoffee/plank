@@ -13,7 +13,6 @@ if (!sessionStorage.swOff) {
       .then(function (registration) {
         console.debug('sw registered!')
         console.debug(registration)
-        alert(registration.scope)
       }).catch(function (error) {
       console.error(error)
     });
