@@ -5,7 +5,6 @@
   "lang": "da",
 
   "start_url": "./index.html",
-  "scope": "./",
 
   "display": "standalone",
   "background_color": "#ffffff",
