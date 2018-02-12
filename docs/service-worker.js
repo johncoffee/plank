@@ -2,7 +2,6 @@
 
 self.addEventListener('activate', function(event) {
   var cacheWhitelist = ['v1'];
-
   console.debug("Running clean up..")
   event.waitUntil(
     caches.keys().then(function(keyList) {
