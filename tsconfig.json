@@ -16,8 +16,7 @@
     "sourceMap": false,
     "pretty": true,
     "noEmitOnError": false,
-    "alwaysStrict": true,
-    "outDir": "build"
+    "alwaysStrict": true
   },
   "exclude": [
     "./node_modules",

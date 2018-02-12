@@ -26,7 +26,7 @@ let functionsCode = names
  } `)
     .join('\n')
   + '// For copy-pasting:\n'
-  + names.map(name => `  // play_${name},`)
+  + names.map(name => `   play_${name},`)
         .join('\n')
    +  `
    enum Sound {
