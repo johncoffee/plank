@@ -28,7 +28,7 @@ basic: clean
 gh: basic
 	# ignore build on github
 	cp .nojekyll build/.nojekyll
-	cp -r build docs
+	cp -r build/ docs/
 
 ipfs: basic
 	ipfs add -rQ --pin=false build/
