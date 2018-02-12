@@ -4,8 +4,8 @@
 
   "lang": "da",
 
-  "start_url": "/plank/",
-  "scope": "/plank/",
+  "start_url": "./index.html",
+  "scope": "./",
 
   "display": "standalone",
   "background_color": "#ffffff",
