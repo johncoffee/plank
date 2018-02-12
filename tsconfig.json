@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "none",
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noUnusedLocals": false,
@@ -12,15 +12,15 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "preserveConstEnums": true,
-    "target": "es2016",
+    "target": "es2017",
     "sourceMap": false,
     "pretty": true,
-    "noEmitOnError": true
+    "noEmitOnError": false,
+    "alwaysStrict": true,
+    "outDir": "build"
   },
   "exclude": [
-    "node_modules"
-  ],
-  "typeroots": [
-    "node_modules/@types"
+    "./node_modules",
+    "./plank"
   ]
 }

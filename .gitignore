@@ -47,5 +47,8 @@ nbproject
 /config.json
 /db-config.json
 
+tools/**/*.js
 sfx/*.wav
 sfx/*.wave
+
+build

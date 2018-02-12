@@ -1,3 +1,4 @@
+"use strict";
 function play_7_endnu() {
     let e = document.getElementById("7_endnu");
     if (!localStorage.getItem('muted') && e) {
@@ -457,61 +458,61 @@ var Sound;
     Sound[Sound["play_vi_venter_lige_paa_oliver"] = 55] = "play_vi_venter_lige_paa_oliver";
     Sound[Sound["play_whoow"] = 56] = "play_whoow";
 })(Sound || (Sound = {}));
-let sfxMap = new Map();
-sfxMap.set(Sound.play_7_endnu, play_7_endnu);
-sfxMap.set(Sound.play_Blip1, play_Blip1);
-sfxMap.set(Sound.play_Blip2, play_Blip2);
-sfxMap.set(Sound.play_Blip3, play_Blip3);
-sfxMap.set(Sound.play_alright_lets_call_it_a_day, play_alright_lets_call_it_a_day);
-sfxMap.set(Sound.play_biipbiip, play_biipbiip);
-sfxMap.set(Sound.play_but_lower_your_butt, play_but_lower_your_butt);
-sfxMap.set(Sound.play_coin, play_coin);
-sfxMap.set(Sound.play_complaining_is_always_good, play_complaining_is_always_good);
-sfxMap.set(Sound.play_der_er_en_del_nye_oevelser, play_der_er_en_del_nye_oevelser);
-sfxMap.set(Sound.play_det_jo_ren_afslapning, play_det_jo_ren_afslapning);
-sfxMap.set(Sound.play_det_kan_jeg_godt_li, play_det_kan_jeg_godt_li);
-sfxMap.set(Sound.play_det_var_2_runder, play_det_var_2_runder);
-sfxMap.set(Sound.play_dette_er_den_nye_planke, play_dette_er_den_nye_planke);
-sfxMap.set(Sound.play_done_for_today, play_done_for_today);
-sfxMap.set(Sound.play_du_har_30_sek_tilbage, play_du_har_30_sek_tilbage);
-sfxMap.set(Sound.play_du_kommer_lige_til_din_yndlings, play_du_kommer_lige_til_din_yndlings);
-sfxMap.set(Sound.play_duuut, play_duuut);
-sfxMap.set(Sound.play_fanfare, play_fanfare);
-sfxMap.set(Sound.play_fart1, play_fart1);
-sfxMap.set(Sound.play_fedt, play_fedt);
-sfxMap.set(Sound.play_good_job, play_good_job);
-sfxMap.set(Sound.play_good_job2, play_good_job2);
-sfxMap.set(Sound.play_hold_boette, play_hold_boette);
-sfxMap.set(Sound.play_husk_hoften_den_sku_vaere_plan, play_husk_hoften_den_sku_vaere_plan);
-sfxMap.set(Sound.play_husk_numserne_de_skal_ned, play_husk_numserne_de_skal_ned);
-sfxMap.set(Sound.play_husk_numserne_skal_ned, play_husk_numserne_skal_ned);
-sfxMap.set(Sound.play_husk_og_hold_hoften_lee, play_husk_og_hold_hoften_lee);
-sfxMap.set(Sound.play_hvorfor_goer_vi_det_her, play_hvorfor_goer_vi_det_her);
-sfxMap.set(Sound.play_if_its_too_easy_and_doesnt_burn, play_if_its_too_easy_and_doesnt_burn);
-sfxMap.set(Sound.play_jeg_kan_godt_maerke_det_3_gang, play_jeg_kan_godt_maerke_det_3_gang);
-sfxMap.set(Sound.play_jeg_kan_ikke_goere_det, play_jeg_kan_ikke_goere_det);
-sfxMap.set(Sound.play_jeg_syns_vi_skal_springe_den_over, play_jeg_syns_vi_skal_springe_den_over);
-sfxMap.set(Sound.play_julian_lydoptager_du_det_her, play_julian_lydoptager_du_det_her);
-sfxMap.set(Sound.play_klar_til_runde_2, play_klar_til_runde_2);
-sfxMap.set(Sound.play_lee_kom_nu, play_lee_kom_nu);
-sfxMap.set(Sound.play_ned_med_numsen, play_ned_med_numsen);
-sfxMap.set(Sound.play_ned_med_numserne, play_ned_med_numserne);
-sfxMap.set(Sound.play_nice_slow, play_nice_slow);
-sfxMap.set(Sound.play_nu_gider_jeg_ikke_lave_den_mere, play_nu_gider_jeg_ikke_lave_den_mere);
-sfxMap.set(Sound.play_ready, play_ready);
-sfxMap.set(Sound.play_saa_skal_vi_over_og_laegge_paa_siden, play_saa_skal_vi_over_og_laegge_paa_siden);
-sfxMap.set(Sound.play_skub_biseps_fremad, play_skub_biseps_fremad);
-sfxMap.set(Sound.play_skulder_klap, play_skulder_klap);
-sfxMap.set(Sound.play_stille_og_rolige_bevaegelser, play_stille_og_rolige_bevaegelser);
-sfxMap.set(Sound.play_that_was_the_first_set, play_that_was_the_first_set);
-sfxMap.set(Sound.play_tuk_tuk3, play_tuk_tuk3);
-sfxMap.set(Sound.play_tuk_tuk_en_gang, play_tuk_tuk_en_gang);
-sfxMap.set(Sound.play_tuktuk, play_tuktuk);
-sfxMap.set(Sound.play_tuktuk2, play_tuktuk2);
-sfxMap.set(Sound.play_tuktuk4, play_tuktuk4);
-sfxMap.set(Sound.play_uden_at_boeje_albuerne, play_uden_at_boeje_albuerne);
-sfxMap.set(Sound.play_up_with_your_butts, play_up_with_your_butts);
-sfxMap.set(Sound.play_vi_goer_klar_til_diagonal, play_vi_goer_klar_til_diagonal);
-sfxMap.set(Sound.play_vi_kan_godt_grine_igennem_det_naeste, play_vi_kan_godt_grine_igennem_det_naeste);
-sfxMap.set(Sound.play_vi_venter_lige_paa_oliver, play_vi_venter_lige_paa_oliver);
-sfxMap.set(Sound.play_whoow, play_whoow);
+//   let sfxMap = new Map<Sound, Function>()
+//   sfxMap.set(Sound.play_7_endnu,  play_7_endnu )
+// sfxMap.set(Sound.play_Blip1,  play_Blip1 )
+// sfxMap.set(Sound.play_Blip2,  play_Blip2 )
+// sfxMap.set(Sound.play_Blip3,  play_Blip3 )
+// sfxMap.set(Sound.play_alright_lets_call_it_a_day,  play_alright_lets_call_it_a_day )
+// sfxMap.set(Sound.play_biipbiip,  play_biipbiip )
+// sfxMap.set(Sound.play_but_lower_your_butt,  play_but_lower_your_butt )
+// sfxMap.set(Sound.play_coin,  play_coin )
+// sfxMap.set(Sound.play_complaining_is_always_good,  play_complaining_is_always_good )
+// sfxMap.set(Sound.play_der_er_en_del_nye_oevelser,  play_der_er_en_del_nye_oevelser )
+// sfxMap.set(Sound.play_det_jo_ren_afslapning,  play_det_jo_ren_afslapning )
+// sfxMap.set(Sound.play_det_kan_jeg_godt_li,  play_det_kan_jeg_godt_li )
+// sfxMap.set(Sound.play_det_var_2_runder,  play_det_var_2_runder )
+// sfxMap.set(Sound.play_dette_er_den_nye_planke,  play_dette_er_den_nye_planke )
+// sfxMap.set(Sound.play_done_for_today,  play_done_for_today )
+// sfxMap.set(Sound.play_du_har_30_sek_tilbage,  play_du_har_30_sek_tilbage )
+// sfxMap.set(Sound.play_du_kommer_lige_til_din_yndlings,  play_du_kommer_lige_til_din_yndlings )
+// sfxMap.set(Sound.play_duuut,  play_duuut )
+// sfxMap.set(Sound.play_fanfare,  play_fanfare )
+// sfxMap.set(Sound.play_fart1,  play_fart1 )
+// sfxMap.set(Sound.play_fedt,  play_fedt )
+// sfxMap.set(Sound.play_good_job,  play_good_job )
+// sfxMap.set(Sound.play_good_job2,  play_good_job2 )
+// sfxMap.set(Sound.play_hold_boette,  play_hold_boette )
+// sfxMap.set(Sound.play_husk_hoften_den_sku_vaere_plan,  play_husk_hoften_den_sku_vaere_plan )
+// sfxMap.set(Sound.play_husk_numserne_de_skal_ned,  play_husk_numserne_de_skal_ned )
+// sfxMap.set(Sound.play_husk_numserne_skal_ned,  play_husk_numserne_skal_ned )
+// sfxMap.set(Sound.play_husk_og_hold_hoften_lee,  play_husk_og_hold_hoften_lee )
+// sfxMap.set(Sound.play_hvorfor_goer_vi_det_her,  play_hvorfor_goer_vi_det_her )
+// sfxMap.set(Sound.play_if_its_too_easy_and_doesnt_burn,  play_if_its_too_easy_and_doesnt_burn )
+// sfxMap.set(Sound.play_jeg_kan_godt_maerke_det_3_gang,  play_jeg_kan_godt_maerke_det_3_gang )
+// sfxMap.set(Sound.play_jeg_kan_ikke_goere_det,  play_jeg_kan_ikke_goere_det )
+// sfxMap.set(Sound.play_jeg_syns_vi_skal_springe_den_over,  play_jeg_syns_vi_skal_springe_den_over )
+// sfxMap.set(Sound.play_julian_lydoptager_du_det_her,  play_julian_lydoptager_du_det_her )
+// sfxMap.set(Sound.play_klar_til_runde_2,  play_klar_til_runde_2 )
+// sfxMap.set(Sound.play_lee_kom_nu,  play_lee_kom_nu )
+// sfxMap.set(Sound.play_ned_med_numsen,  play_ned_med_numsen )
+// sfxMap.set(Sound.play_ned_med_numserne,  play_ned_med_numserne )
+// sfxMap.set(Sound.play_nice_slow,  play_nice_slow )
+// sfxMap.set(Sound.play_nu_gider_jeg_ikke_lave_den_mere,  play_nu_gider_jeg_ikke_lave_den_mere )
+// sfxMap.set(Sound.play_ready,  play_ready )
+// sfxMap.set(Sound.play_saa_skal_vi_over_og_laegge_paa_siden,  play_saa_skal_vi_over_og_laegge_paa_siden )
+// sfxMap.set(Sound.play_skub_biseps_fremad,  play_skub_biseps_fremad )
+// sfxMap.set(Sound.play_skulder_klap,  play_skulder_klap )
+// sfxMap.set(Sound.play_stille_og_rolige_bevaegelser,  play_stille_og_rolige_bevaegelser )
+// sfxMap.set(Sound.play_that_was_the_first_set,  play_that_was_the_first_set )
+// sfxMap.set(Sound.play_tuk_tuk3,  play_tuk_tuk3 )
+// sfxMap.set(Sound.play_tuk_tuk_en_gang,  play_tuk_tuk_en_gang )
+// sfxMap.set(Sound.play_tuktuk,  play_tuktuk )
+// sfxMap.set(Sound.play_tuktuk2,  play_tuktuk2 )
+// sfxMap.set(Sound.play_tuktuk4,  play_tuktuk4 )
+// sfxMap.set(Sound.play_uden_at_boeje_albuerne,  play_uden_at_boeje_albuerne )
+// sfxMap.set(Sound.play_up_with_your_butts,  play_up_with_your_butts )
+// sfxMap.set(Sound.play_vi_goer_klar_til_diagonal,  play_vi_goer_klar_til_diagonal )
+// sfxMap.set(Sound.play_vi_kan_godt_grine_igennem_det_naeste,  play_vi_kan_godt_grine_igennem_det_naeste )
+// sfxMap.set(Sound.play_vi_venter_lige_paa_oliver,  play_vi_venter_lige_paa_oliver )
+// sfxMap.set(Sound.play_whoow,  play_whoow )

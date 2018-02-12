@@ -1,3 +1,4 @@
+"use strict";
 var queue = [];
 // window.queue = queue
 queue.push({
