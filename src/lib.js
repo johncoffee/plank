@@ -130,12 +130,16 @@ function playRandomFromArray (array, delay) {
   console.debug('inserted animation classes')
 })()
 
-function uninstall () {
+function uninstall (showAlert) {
   navigator.serviceWorker.getRegistrations().then(function(registrations) {
     if (!Array.from(registrations).length ) console.log("no service workers")
 
     for(let registration of registrations) {
       registration.unregister()
       console.debug("service worker uninstalled", registration)
+      if (showAlert) {
+        alert("At least 1 service worker uninstalled")
+        showAlert = false
+      }
     } })
 }
