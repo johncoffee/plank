@@ -34,11 +34,6 @@ async function loadContent () {
 }
 
 function toggleFullScreen () {
-  if (!sessionStorage.hasPlayed) {
-    sessionStorage.hasPlayed = 1
-    play_vi_venter_lige_paa_oliver()
-  }
-
   if ((document.fullScreenElement && document.fullScreenElement !== null) ||
     (!document.mozFullScreen && !document.webkitIsFullScreen)) {
     if (document.documentElement.requestFullScreen) {
