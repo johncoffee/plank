@@ -1,5 +1,5 @@
 PHONY:
-	echo "Choose a build target!"
+	@echo "Choose a build target!"
 
 clean:
 	rm -rf build
