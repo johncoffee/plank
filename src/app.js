@@ -8,6 +8,13 @@ angular.module("app").config(function ($mdThemingProvider) {
     .accentPalette('orange')
 })
 
+angular.module("app").config(function() {
+  if (!Routes[sessionStorage.route]) {
+    // default route
+    sessionStorage.route = Routes.PLANKE
+  }
+})
+
 angular.module('app').component('plankApp', {
   template: `
     <sound-board ng-if="$ctrl.route == ${Routes.SOUND_BOARD}"></sound-board>    
@@ -18,11 +25,6 @@ angular.module('app').component('plankApp', {
     Object.defineProperty(this, 'route', {
       get: () => sessionStorage.route,
     })
-
-    if (!Routes[sessionStorage.route]) {
-      // default route
-      sessionStorage.route = Routes.PLANKE
-    }
   },
 })
 
