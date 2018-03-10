@@ -1,6 +1,6 @@
 'use strict'
 
-let handles = new Set()
+const handles = new Set()
 
 document.addEventListener('keypress', (event) => {
   if (event.keyCode === 116) {

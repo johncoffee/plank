@@ -165,22 +165,34 @@ angular.module('app').component('plank', {
   </div>
 </div>
 <div class="screen" style="z-index: 10">
+  <div class="hover-button" style="top: 1rem; bottom: auto;">
+    <div layout="row" layout-align="space-between none">        
+         <div></div>                       
+         <div style="margin-left: 2rem">        
+           <md-button class="md-button" ng-click="$ctrl.menu()" aria-label="menu">MENU</md-button>          
+         </div>    
+    </div>
+  </div>      
   <div class="hover-button">
     <div layout="row" layout-align="space-between none">        
-       <div style="margin-left: 2rem">        
-         <md-button class="md-button" ng-click="$ctrl.menu()">resources</md-button>          
-       </div>                
-       <div style="margin-right: 2rem">               
-          <md-button class="md-button md-raised"
+       <div></div>                       
+       <div style="margin-right: 2rem">    
+       
+          <md-button class="md-button"
             ng-click="$ctrl.muted = !$ctrl.muted" 
        aria-label="{{$ctrl.muted ? 'unmute' : 'mute'}}"
             ng-bind="$ctrl.muted ? 'unmute' : 'mute'"></md-button>
-                                                                    
+       
+          <md-button class="md-button md-raised"          
+            ng-click="$ctrl.skip()"                        
+            ng-disabled="!$ctrl.running()"
+            aria-label="skip">SKIP</md-button>
+                                                                                
           <md-button class="md-button md-raised"
            ng-class="{'md-accent': $ctrl.running(), 'md-primary': !$ctrl.running()}"
-          ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start()"
+           ng-click="$ctrl.running() ? $ctrl.stop() : $ctrl.start(0, 3)"
            ng-bind="$ctrl.running() ? 'stop' : 'start'"
-        aria-label="$ctrl.running() ? 'stop' : 'start'"></md-button>
+        aria-label="{{$ctrl.running() ? 'stop' : 'start'}}"></md-button>
        </div>            
     </div>
   </div>
@@ -192,7 +204,6 @@ angular.module('app').component('plank', {
     const queue = $window.queue
     this.queue = $window.queue
 
-    const APPLY = true
     let primary = 'indigo'
     const colours = Object.keys($mdColorPalette).filter(colour => colour !== primary)
     const numColours = colours.length
@@ -220,9 +231,7 @@ angular.module('app').component('plank', {
       queue.length = 0
       const result = await loadContent()
       result.forEach(item => queue.push(item))
-      console.log(queue)
-      self.text = "PLANKEN"
-      self.textTop = "PRESS START"
+      self.stop() // use reset here
       $scope.$apply()
     }
 
@@ -231,10 +240,10 @@ angular.module('app').component('plank', {
     }
 
     this.rotateColours = () => {
-      this.bgColour = colours[Math.floor(numColours * Math.random())]
-      this.progressColour = colours[Math.floor(numColours * Math.random())]
-      if (this.bgColour === this.progressColour) {
-        this.rotateColours()
+      this.bgColour = this.progressColour = ''
+      while (this.bgColour === this.progressColour) {
+        this.bgColour = colours[Math.floor(numColours * Math.random())]
+        this.progressColour = colours[Math.floor(numColours * Math.random())]
       }
     }
 
@@ -266,19 +275,19 @@ angular.module('app').component('plank', {
     }
 
     function onSetEnd () {
-      console.debug('on set END')
+      console.debug('onSetEnd')
       play_fanfare()
       playRandomFromArray(dones, 2.5)
-
-      playAfter(() => {
-        running = false
-        self.text = "PLANKEN"
-        self.textTop = "PRESS START"
-      }, 0.1, APPLY)
     }
 
     function onLastEnd (item) {
       console.debug('Done. (onLastEnd)', item)
+    }
+
+    function onEnded (item) {
+      console.debug('Done or stopped. (onEnded)', item)
+      self.text = "PLANKING TIME"
+      self.textTop = "PRESS START"
     }
 
     function onFirstStart (item) {
@@ -292,6 +301,8 @@ angular.module('app').component('plank', {
     function onStart (item, index) {
       console.debug('starts', item.name)
       self.text = item.name
+
+      self.rotateColours()
 
       let animationClass = 'duration-visual--' + item.duration
       console.assert(item.duration, "should be duration")
@@ -312,15 +323,15 @@ angular.module('app').component('plank', {
         playAfter(() => {
           play_Blip3();
           self.text = 1
-        }, item.duration - 1.1, APPLY)
+        }, item.duration - 1.1)
         playAfter(() => {
           play_Blip2();
           self.text = 2
-        }, item.duration - 2.1, APPLY)
+        }, item.duration - 2.1)
         playAfter(() => {
           play_Blip1();
           self.text = 3
-        }, item.duration - 3.1, APPLY)
+        }, item.duration - 3.1)
       }
 
       const nextItem = queue[index + 2]
@@ -330,21 +341,20 @@ angular.module('app').component('plank', {
     }
 
     function onEnd (item) {
-      self.rotateColours()
-      $scope.$apply()
       play_biipbiip()
       console.debug('ends', item)
       self.textTop = ""
+      $scope.$apply()
     }
 
     function onHalfTime (item, index, queue) {
     }
 
-    function playAfter (callback, seconds, apply) {
+    function playAfter (callback, seconds) {
       if (seconds > 100) console.warn("Alt for langt timeout", seconds)
       const handle = setTimeout(() => {
         callback()
-        if (apply && !$scope.$$phase) {
+        if (!$scope.$$phase) {
           $scope.$apply()
         }
       }, seconds * 1000)
@@ -353,29 +363,38 @@ angular.module('app').component('plank', {
     }
 
     this.stop = function () {
-      this.text = "PLANKEN"
-      this.textTop = "PRESS START"
+      running = false
+      onEnded(self.queue[self.index])
 
       handles.forEach(handle => clearTimeout(handle))
-      handles = new Set()
+      handles.clear()
 
-      running = false
       self.index = 0
 
       document.getElementById('duration-visual')
         .setAttribute('class', '')
     }
 
-    this.start = function () {
+    this.start = function (index, numSets) {
+      self.index = index
+
       if (!this.running()) {
-        this.setsLeft = 3
+        self.setsLeft = numSets
         running = true
-        onGetReadyStart()
-        playAfter(() => onGetReadyEnd(), 3)
-        playAfter(() => self.startItem(0, this.setsLeft > 0), 3, APPLY)
+        if (index === 0) {
+          const secondsToStart = 3
+          onGetReadyStart()
+          playAfter(() => onGetReadyEnd(), secondsToStart)
+
+          playAfter(() => self.startItem(index, self.setsLeft > 0), secondsToStart)
+        }
+        else {
+          // start immediately
+          self.startItem(index, self.setsLeft > 0)
+        }
       }
       else {
-        console.debug("is running")
+        console.warn("is running!")
       }
     }
 
@@ -394,7 +413,7 @@ angular.module('app').component('plank', {
       if (item.onStart) item.onStart(item, index)
       onStart(item, index)
 
-      playAfter(() => onHalfTime(item, index, queue), item.duration * 0.5, APPLY)
+      playAfter(() => onHalfTime(item, index, queue), item.duration * 0.5)
 
       playAfter(() => {
         if (index === 0) {
@@ -407,7 +426,9 @@ angular.module('app').component('plank', {
         if (index === queue.length - 1) {
           onLastEnd(item, index)
           if (this.setsLeft === 0) {
+            running = false
             onSetEnd(item)
+            onEnded(item)
           }
           else {
             this.startItem(0, this.setsLeft > 0)
@@ -416,7 +437,14 @@ angular.module('app').component('plank', {
         else {
           this.startItem(index + 1, loop)
         }
-      }, item.duration, APPLY)
+      }, item.duration)
+    }
+
+    this.skip = function() {
+      const continueAtSet = this.setsLeft
+      const continueAtIndex = (this.index+1 >= this.queue.length) ? 0 : this.index+1
+      this.stop()
+      this.start(continueAtIndex, continueAtSet)
     }
 
     $scope.$on('$destroy', () => {
