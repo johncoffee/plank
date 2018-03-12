@@ -3,12 +3,11 @@ PHONY:
 
 clean:
 	rm -rf build
-	rm -rf docs
 
 tscompile:
 	node node_modules/typescript/bin/tsc -p ./tsconfig.json
 
-basic:
+basic: clean
 	mkdir -p build
 	cp -r data build
 	cp -r images build
@@ -28,11 +27,12 @@ basic:
 	mkdir -p build/node_modules/angular-material
 	cp       node_modules/angular-material/angular-material.min.css build/node_modules/angular-material/angular-material.min.css
 
-gh: clean tscompile basic
-	# ignore build on github
+gh: clean basic
+	#@ stop github's jekyll build process, because it leaves out files in 'node_modules' folder
 	cp .nojekyll build/.nojekyll
-	mv build/ docs/
+	cp -r build/ docs/
 	git add docs
+	@echo "Done. You should push to github now."
 
-ipfs: clean tscompile basic
-	ipfs add -rQ --pin=false build/
+ipfs: clean basic
+	ipfs add -rQ --pin=false build
