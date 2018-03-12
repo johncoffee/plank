@@ -1,13 +1,14 @@
 PHONY:
-	@echo "Choose a build target!"
+	@echo "Choose a build target! $ make [ipfs | gh]"
 
 clean:
 	rm -rf build
+	rm -rf docs
 
 tscompile:
 	node node_modules/typescript/bin/tsc -p ./tsconfig.json
 
-basic: clean
+basic:
 	mkdir -p build
 	cp -r data build
 	cp -r images build
@@ -27,10 +28,11 @@ basic: clean
 	mkdir -p build/node_modules/angular-material
 	cp       node_modules/angular-material/angular-material.min.css build/node_modules/angular-material/angular-material.min.css
 
-gh: basic
+gh: clean tscompile basic
 	# ignore build on github
 	cp .nojekyll build/.nojekyll
 	mv build/ docs/
+	git add docs
 
-ipfs: basic
+ipfs: clean tscompile basic
 	ipfs add -rQ --pin=false build/
