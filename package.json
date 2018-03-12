@@ -18,9 +18,9 @@
     "angular-material": "^1.1.7"
   },
   "devDependencies": {
-    "@types/node": "^8.9.4",
+    "@types/node": "^8.9.5",
     "reflect-metadata": "^0.1.12",
-    "typescript": "^2.7.1",
+    "typescript": "^2.7.2",
     "walk-sync": "^0.3.1"
   }
 }
