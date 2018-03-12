@@ -4,7 +4,7 @@ A simple fitness app. Try it here:
 
 Github pages: https://johncoffee.github.io/plank/
 
-IPFS: https://gateway.ipfs.io/ipfs/QmWBEkxaFe9bw1ctq3k8adDpX5K6yu8syemW9kJLebZHr1
+IPFS: https://gateway.ipfs.io/ipfs/Qmc1t33D99yot95vexgXrgsyXeFd6ULrmmFn8BUt8NKzZA
 
 
 ## Tech stuff
