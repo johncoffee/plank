@@ -17,6 +17,7 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
+  location.toString().includes('localhost') && console.debug("fetch",event)
   event.respondWith(
     caches.match(event.request).then(function(resp) {
       return resp || fetch(event.request).then(function(response) {

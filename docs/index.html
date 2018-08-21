@@ -15,7 +15,7 @@ var exports = {} // hax
 <link rel="manifest" href="manifest.json">
 <script>
 if (!sessionStorage.swOff) {
-    navigator.serviceWorker.register('service-worker.js', { scope: './' })
+    navigator.serviceWorker.register('./service-worker.js', { scope: './' })
       .then(function (registration) {
         console.debug('sw registered!')
         console.debug(registration)
