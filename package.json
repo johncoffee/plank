@@ -12,15 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.6.9",
-    "angular-animate": "^1.6.9",
-    "angular-aria": "^1.6.9",
-    "angular-material": "^1.1.7"
+    "angular": "^1.7.3",
+    "angular-animate": "^1.7.3",
+    "angular-aria": "^1.7.3",
+    "angular-material": "^1.1.10"
   },
   "devDependencies": {
-    "@types/node": "^8.9.5",
+    "@types/node": "^8.10.26",
     "reflect-metadata": "^0.1.12",
-    "typescript": "^2.7.2",
-    "walk-sync": "^0.3.1"
+    "typescript": "^3.0.1",
+    "walk-sync": "^0.3.3"
   }
 }
