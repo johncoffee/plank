@@ -29,7 +29,7 @@ basic: clean
 
 gh: clean basic
 	#@ stop github's jekyll build process, because it leaves out files in 'node_modules' folder
-	cp .nojekyll build/.nojekyll
+	touch build/.nojekyll
 	cp -r build/ docs/
 	git add docs
 	@echo "Done. You should push to github now."
