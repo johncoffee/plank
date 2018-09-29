@@ -34,5 +34,8 @@ gh: clean basic
 	git add docs
 	@echo "Done. You should push to github now."
 
-ipfs: clean basic
-	ipfs add -rQ --pin=false build
+ipfs-add:
+	ipfs add -rQ --cid-version=1 --pin=false ./build/
+
+ipfs: clean basic ipfs-add
+	@echo "Done."
